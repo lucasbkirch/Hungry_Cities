@@ -55,12 +55,6 @@ void MobileCity::update()
     {
         mobileObj.angle = (int)mobileObj.angle % 360;
     }
-
-    if (sprite.getGlobalBounds().intersects(sf::FloatRect(0, 0, 250, 250)))
-    {
-        std::cout << "INTERSECTION " << sprite.getGlobalBounds().intersects(sf::FloatRect(0, 0, 2000, 2000));
-    }
-
 }
 
 StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)

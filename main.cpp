@@ -13,12 +13,13 @@ int main()
     WorldMap world_map ("Images/map_1.png");
     world_map.InitializeTiles();
 
-    std::map<std::string, City> cityDict;
+    std::map<std::string, City *> cityDict;
 
     PlayerCity playerCity ("London", 100, "Images/city.png");
     StaticCity targetCity ("Amsterdam", 50, "Images/circle.png");
 
-    cityDict.insert(std::pair<std::string, City>(playerCity.name, playerCity));
+    //cityDict.insert(std::pair<std::string, City>(playerCity.name, playerCity));
+    cityDict.insert(std::pair<std::string, City *>(targetCity.name, &targetCity));
 
     sf::View view; // could be used later to show view radius changes
 
@@ -54,13 +55,25 @@ int main()
             playerCity.rotate("right");
         }
 
+        std::map<std::string, City *>::iterator cityIter;
+
+
+        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+        {
+            if (playerCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
+            {
+                //TODO Handle Collision!
+            }
+        }
+
         window.clear();
         playerCity.update();
         targetCity.update(playerCity);
         world_map.update(playerCity.mobileObj.x, playerCity.mobileObj.y);
         window.draw(world_map.world);
-        window.draw(playerCity.sprite);
         window.draw(targetCity.sprite);
+        window.draw(playerCity.sprite);
+
         window.display();
     }
 
