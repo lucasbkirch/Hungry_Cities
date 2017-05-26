@@ -1,20 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-class WorldMap
+class Point
 {
+    public:
+        int x, y;
+        Point(int xPos, int yPos)
+        {
+            x = xPos;
+            y = yPos;
+        }
 
-public:
-    sf::Sprite world;
-    sf::Texture texture;
-
-    WorldMap(std::string mapFile)
-    {
-        texture.loadFromFile(mapFile);
-        world.setTexture(texture);
-    }
-    void update(double, double);
-    void InitializeTiles();
+        bool operator <(const Point& rhs) const
+        {
+            return !(rhs.x == x && rhs.y == y);
+        }
 };
 
 class TerrainTile
@@ -64,3 +64,21 @@ public:
         }
     }
 };
+
+class WorldMap
+{
+
+public:
+    sf::Sprite world;
+    sf::Texture texture;
+    std::map<Point, TerrainTile> tileMap;
+
+    WorldMap(std::string mapFile)
+    {
+        texture.loadFromFile(mapFile);
+        world.setTexture(texture);
+    }
+    void update(double, double);
+    void InitializeTiles();
+};
+

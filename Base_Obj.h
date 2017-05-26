@@ -31,19 +31,3 @@ class AI_Object
 
 
 };
-
-class Point
-{
-    public:
-        int x, y;
-        Point(int xPos, int yPos)
-        {
-            x = xPos;
-            y = yPos;
-        }
-
-        bool operator <(const Point& rhs) const
-        {
-            return rhs.x == x && rhs.y == y;
-        }
-};
