@@ -4,13 +4,36 @@
 
 class City
 {
-    int size;
-    sf::Texture texture;
     public:
-        Mobile_Object mobileObj;
+        int size;
+        sf::Texture texture;
         sf::Sprite sprite;
-        City(int, std::string);
+        std::string name;
+        City(std::string, int, std::string);
+};
+
+class MobileCity: public City
+{
+    public:
+
+        MobileCity(std::string, int, std::string);
+        Mobile_Object mobileObj;
         void rotate(std::string turn);
         void move(std::string direction);
         void update();
 };
+
+class PlayerCity: public MobileCity
+{
+    public:
+        PlayerCity(std::string, int, std::string);
+};
+
+class StaticCity: public City
+{
+    public:
+        int x, y;
+        StaticCity(std::string, int, std::string);
+        void update(PlayerCity);
+};
+

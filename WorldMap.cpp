@@ -14,7 +14,7 @@ void WorldMap::InitializeTiles()
         j = 0;
         i += 20;
     }
-    std::cout << "Number of Tiles " << tileMap.size();
+    std::cout << tileMap.size() << " Tiles Initialized\n";
 
 }
 

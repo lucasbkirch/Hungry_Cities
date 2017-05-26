@@ -1,19 +1,27 @@
 #include "Cities.h"
 #include <cmath>
+#include <iostream>
 #define PI 3.14159265
 
-City::City(int sz, std::string txtur_name)
-: mobileObj()
+
+
+City::City(std::string cityName, int sz, std::string txturName)
 {
-    texture.loadFromFile(txtur_name);
+    name = cityName;
+    texture.loadFromFile(txturName);
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(0, 0, 50, 100));
-    sprite.setPosition(320, 320);
     sprite.setOrigin(25, 50);
     sprite.setRotation(180); //TODO ???
 }
 
-void City::move(std::string direction)
+MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
+: City(cityName, sz, txturName), mobileObj()
+{
+    //TODO
+}
+
+void MobileCity::move(std::string direction)
 {
     int dir = 0;
     if (direction.compare("forward") == 0)
@@ -27,7 +35,7 @@ void City::move(std::string direction)
     mobileObj.x += (dir * std::sin(radians) * mobileObj.moveSpd);
 }
 
-void City::rotate(std::string turn)
+void MobileCity::rotate(std::string turn)
 {
     if (turn.compare("right") == 0)
     {
@@ -39,7 +47,7 @@ void City::rotate(std::string turn)
     }
 }
 
-void City::update()
+void MobileCity::update()
 {
     sprite.setPosition(320, 320);
     sprite.setRotation(-mobileObj.angle);
@@ -47,4 +55,28 @@ void City::update()
     {
         mobileObj.angle = (int)mobileObj.angle % 360;
     }
+
+    if (sprite.getGlobalBounds().intersects(sf::FloatRect(0, 0, 250, 250)))
+    {
+        std::cout << "INTERSECTION " << sprite.getGlobalBounds().intersects(sf::FloatRect(0, 0, 2000, 2000));
+    }
+
 }
+
+StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
+: City(cityName, sz, txturName)
+{
+    sprite.setPosition(2500, 2500);
+}
+
+void StaticCity::update(PlayerCity playerCity)
+{
+    sprite.setPosition(2500 - playerCity.mobileObj.x, 2500 - playerCity.mobileObj.y);
+}
+
+PlayerCity::PlayerCity(std::string cityName, int sz, std::string txturName)
+: MobileCity(cityName, sz, txturName)
+{
+    sprite.setPosition(320, 320);
+}
+
