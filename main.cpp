@@ -16,14 +16,6 @@ int main()
     City player_city (100, "Images/city.png");
     sf::View view; // could be used later to show view radius changes
 
-    std::map<Point, TerrainTile> tileMap;
-    Point point = Point(0, 0);
-    TerrainTile tileM = TerrainTile(0, 0, "grass");
-        std::cout << tileMap.size();
-
-    tileMap.insert(std::pair<Point, TerrainTile>(point, tileM));
-    std::cout << tileMap.size();
-
     while (window.isOpen())
     {
         sf::Event event;

@@ -8,11 +8,13 @@ void WorldMap::InitializeTiles()
     {
         while (j < world.getGlobalBounds().height)
         {
+            tileMap.insert(std::pair<Point, TerrainTile>(Point(i, j), TerrainTile(i, j, "grass"))); //TODO
             j += 20;
         }
         j = 0;
         i += 20;
     }
+    std::cout << "Number of Tiles " << tileMap.size();
 
 }
 
