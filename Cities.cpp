@@ -11,15 +11,13 @@ City::City(std::string cityName, int sz, std::string txturName)
     name = cityName;
     texture.loadFromFile(txturName);
     sprite.setTexture(texture);
-    sprite.setTextureRect(sf::IntRect(0, 0, 50, 100));
-    sprite.setOrigin(25, 50);
-    sprite.setRotation(180); //TODO ???
 }
 
 MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName), mobileObj()
 {
-    //TODO
+    sprite.setTextureRect(sf::IntRect(0, 0, 50, 100));
+    sprite.setOrigin(25, 50);
 }
 
 void MobileCity::move(std::string direction)
@@ -61,12 +59,16 @@ void MobileCity::update()
 StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName)
 {
-    sprite.setPosition(2500, 2500);
+    x = rand() % 5000;
+    y = rand() % 5000;
+    sprite.setPosition(x, y);
+    sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+    sprite.setOrigin(50, 50);
 }
 
 void StaticCity::update(PlayerCity playerCity)
 {
-    sprite.setPosition(2500 - playerCity.mobileObj.x, 2500 - playerCity.mobileObj.y);
+    sprite.setPosition(x - playerCity.mobileObj.x, y - playerCity.mobileObj.y);
 }
 
 PlayerCity::PlayerCity(std::string cityName, int sz, std::string txturName)

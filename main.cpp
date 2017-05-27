@@ -17,10 +17,18 @@ int main()
     std::map<std::string, City *> tempCityDict;
 
     PlayerCity playerCity ("London", 100, "Images/city.png");
-    StaticCity targetCity ("Amsterdam", 50, "Images/circle.png");
+    StaticCity targetCity1 ("Amsterdam", 50, "Images/circle.png");
+    StaticCity targetCity2 ("Paris", 50, "Images/circle.png");
+    StaticCity targetCity3 ("Berlin", 50, "Images/circle.png");
+    StaticCity targetCity4 ("Kalingrad", 50, "Images/circle.png");
+
 
     cityDict.insert(std::pair<std::string, City *>(playerCity.name, &playerCity));
-    cityDict.insert(std::pair<std::string, City *>(targetCity.name, &targetCity));
+    cityDict.insert(std::pair<std::string, City *>(targetCity1.name, &targetCity1));
+    cityDict.insert(std::pair<std::string, City *>(targetCity2.name, &targetCity2));
+    cityDict.insert(std::pair<std::string, City *>(targetCity3.name, &targetCity3));
+    cityDict.insert(std::pair<std::string, City *>(targetCity4.name, &targetCity4));
+
 
     sf::View view; // could be used later to show view radius changes
 
@@ -90,7 +98,6 @@ int main()
             if (static_type != NULL) //if Type StaticCity
             {
                 static_type->update(playerCity);
-                std::cout << "\nStatic City Updated " << static_type->name;
             }
             else //playerCity: Since there is only every 1 player city, there is no need to cast the currently selected cityIter->second to PlayerCity type and update that.
             {
