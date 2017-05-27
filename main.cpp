@@ -59,8 +59,6 @@ int main()
         std::map<std::string, City *>::iterator cityIter;
         tempCityDict.insert(cityDict.begin(), cityDict.end());
 
-        //City currCity;
-
         while(tempCityDict.size() > 0)
         {
             City currCity = *(tempCityDict.begin()->second);
@@ -70,8 +68,16 @@ int main()
             {
                 if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
                 {
-                    std::cout << "Collision between the cities " << currCity.name << " and " << cityIter->first << "\n";
+                    std::cout << "Collision between the cities " << currCity.name << currCity.size_ << " and " << cityIter->first << (cityIter->second)->size_  << "\n";
                     //TODO Handle Collision!
+                    if (currCity.size_ >= (cityIter->second)->size_)
+                    {
+                        cityDict.erase((cityIter->second)->name);
+                    }
+                    else
+                    {
+                        cityDict.erase(currCity.name);
+                    }
                 }
             }
         }

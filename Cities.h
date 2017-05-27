@@ -5,7 +5,7 @@
 class City
 {
     public:
-        int size;
+        int size_;
         sf::Texture texture;
         sf::Sprite sprite;
         std::string name;

@@ -7,6 +7,7 @@
 
 City::City(std::string cityName, int sz, std::string txturName)
 {
+    size_ = sz;
     name = cityName;
     texture.loadFromFile(txturName);
     sprite.setTexture(texture);
