@@ -76,8 +76,21 @@ int main()
             }
         }
         window.clear();
-        playerCity.update();
-        targetCity.update(playerCity);
+        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+        {
+
+            StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
+
+            if (static_type != NULL) //if Type StaticCity
+            {
+                static_type->update(playerCity);
+                std::cout << "\nStatic City Updated " << static_type->name;
+            }
+            else //playerCity: Since there is only every 1 player city, there is no need to cast the currently selected cityIter->second to PlayerCity type and update that.
+            {
+                playerCity.update();
+            }
+        }
         world_map.update(playerCity.mobileObj.x, playerCity.mobileObj.y);
         window.draw(world_map.world);
 

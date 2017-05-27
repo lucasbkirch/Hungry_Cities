@@ -10,6 +10,7 @@ class City
         sf::Sprite sprite;
         std::string name;
         City(std::string, int, std::string);
+        virtual ~City(){} //TODO -- https://stackoverflow.com/questions/15114093/getting-source-type-is-not-polymorphic-when-trying-to-use-dynamic-cast
 };
 
 class MobileCity: public City
