@@ -16,19 +16,18 @@ int main()
     std::map<std::string, City *> cityDict;
     std::map<std::string, City *> tempCityDict;
 
+    //Creating and adding all the city objects
     PlayerCity playerCity ("London", 100, "Images/city.png");
     StaticCity targetCity1 ("Amsterdam", 50, "Images/circle.png");
     StaticCity targetCity2 ("Paris", 50, "Images/circle.png");
     StaticCity targetCity3 ("Berlin", 50, "Images/circle.png");
     StaticCity targetCity4 ("Kalingrad", 50, "Images/circle.png");
 
-
     cityDict.insert(std::pair<std::string, City *>(playerCity.name, &playerCity));
     cityDict.insert(std::pair<std::string, City *>(targetCity1.name, &targetCity1));
     cityDict.insert(std::pair<std::string, City *>(targetCity2.name, &targetCity2));
     cityDict.insert(std::pair<std::string, City *>(targetCity3.name, &targetCity3));
     cityDict.insert(std::pair<std::string, City *>(targetCity4.name, &targetCity4));
-
 
     sf::View view; // could be used later to show view radius changes
 
@@ -64,9 +63,13 @@ int main()
             playerCity.rotate("right");
         }
 
+        //Create Temp dictionary so that the current city won't be asked if it
+        //intersects itself by removing it from the temp dictionary prior to
+        //comparison with all other cities in the temp dictionary
         std::map<std::string, City *>::iterator cityIter;
         tempCityDict.insert(cityDict.begin(), cityDict.end());
 
+        //Checking for collisions between any cities
         while(tempCityDict.size() > 0)
         {
             City currCity = *(tempCityDict.begin()->second);
@@ -90,6 +93,8 @@ int main()
             }
         }
         window.clear();
+
+        //Update all cities
         for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
         {
 
@@ -105,6 +110,8 @@ int main()
             }
         }
         world_map.update(playerCity.mobileObj.x, playerCity.mobileObj.y);
+
+        //Draw the map, cities and other objects in the world
         window.draw(world_map.world);
 
         for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
