@@ -14,7 +14,7 @@ City::City(std::string cityName, int sz, std::string txturName)
 }
 
 MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
-: City(cityName, sz, txturName), mobileObj()
+: City(cityName, sz, txturName)
 {
     sprite.setTextureRect(sf::IntRect(0, 0, 50, 100));
     sprite.setOrigin(25, 50);
@@ -28,31 +28,31 @@ void MobileCity::move(std::string direction)
     else if (direction.compare("backward") == 0)
         dir = 1;
 
-    double radians = mobileObj.angle * PI / 180;
+    double radians = angle * PI / 180;
 
-    mobileObj.y += (dir * std::cos(radians) * mobileObj.moveSpd);
-    mobileObj.x += (dir * std::sin(radians) * mobileObj.moveSpd);
+    y += (dir * std::cos(radians) * moveSpd);
+    x += (dir * std::sin(radians) * moveSpd);
 }
 
 void MobileCity::rotate(std::string turn)
 {
     if (turn.compare("right") == 0)
     {
-        mobileObj.angle -= mobileObj.turn_rate;
+        angle -= turn_rate;
     }
     else if (turn.compare("left") == 0)
     {
-        mobileObj.angle += mobileObj.turn_rate;
+        angle += turn_rate;
     }
 }
 
 void MobileCity::update()
 {
     sprite.setPosition(320, 320);
-    sprite.setRotation(-mobileObj.angle);
-    if (mobileObj.angle > 360 || mobileObj.angle < -360)
+    sprite.setRotation(-angle);
+    if (angle > 360 || angle < -360)
     {
-        mobileObj.angle = (int)mobileObj.angle % 360;
+        angle = (int)angle % 360;
     }
 }
 
@@ -61,6 +61,7 @@ StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
 {
     x = rand() % 5000;
     y = rand() % 5000;
+    std::cout << "Placed at (" << x << ", " << y << ")\n";
     sprite.setPosition(x, y);
     sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
     sprite.setOrigin(50, 50);
@@ -68,7 +69,7 @@ StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
 
 void StaticCity::update(PlayerCity playerCity)
 {
-    sprite.setPosition(x - playerCity.mobileObj.x, y - playerCity.mobileObj.y);
+    sprite.setPosition(x - playerCity.x, y - playerCity.y);
 }
 
 PlayerCity::PlayerCity(std::string cityName, int sz, std::string txturName)

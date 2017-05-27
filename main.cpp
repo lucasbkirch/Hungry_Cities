@@ -109,7 +109,7 @@ int main()
                 playerCity.update();
             }
         }
-        world_map.update(playerCity.mobileObj.x, playerCity.mobileObj.y);
+        world_map.update(playerCity.x, playerCity.y);
 
         //Draw the map, cities and other objects in the world
         window.draw(world_map.world);

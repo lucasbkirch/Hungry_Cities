@@ -13,12 +13,11 @@ class City
         virtual ~City(){} //TODO -- https://stackoverflow.com/questions/15114093/getting-source-type-is-not-polymorphic-when-trying-to-use-dynamic-cast
 };
 
-class MobileCity: public City
+class MobileCity: public City, public Mobile_Object
 {
     public:
-
         MobileCity(std::string, int, std::string);
-        Mobile_Object mobileObj;
+        //Mobile_Object mobileObj;
         void rotate(std::string turn);
         void move(std::string direction);
         void update();
