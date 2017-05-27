@@ -14,11 +14,12 @@ int main()
     world_map.InitializeTiles();
 
     std::map<std::string, City *> cityDict;
+    std::map<std::string, City *> tempCityDict;
 
     PlayerCity playerCity ("London", 100, "Images/city.png");
     StaticCity targetCity ("Amsterdam", 50, "Images/circle.png");
 
-    //cityDict.insert(std::pair<std::string, City>(playerCity.name, playerCity));
+    cityDict.insert(std::pair<std::string, City *>(playerCity.name, &playerCity));
     cityDict.insert(std::pair<std::string, City *>(targetCity.name, &targetCity));
 
     sf::View view; // could be used later to show view radius changes
@@ -56,24 +57,34 @@ int main()
         }
 
         std::map<std::string, City *>::iterator cityIter;
+        tempCityDict.insert(cityDict.begin(), cityDict.end());
 
+        //City currCity;
 
-        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+        while(tempCityDict.size() > 0)
         {
-            if (playerCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
+            City currCity = *(tempCityDict.begin()->second);
+            tempCityDict.erase(tempCityDict.begin()->first);
+
+            for(cityIter = tempCityDict.begin(); cityIter != tempCityDict.end(); cityIter++)
             {
-                //TODO Handle Collision!
+                if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
+                {
+                    std::cout << "Collision between the cities " << currCity.name << " and " << cityIter->first << "\n";
+                    //TODO Handle Collision!
+                }
             }
         }
-
         window.clear();
         playerCity.update();
         targetCity.update(playerCity);
         world_map.update(playerCity.mobileObj.x, playerCity.mobileObj.y);
         window.draw(world_map.world);
-        window.draw(targetCity.sprite);
-        window.draw(playerCity.sprite);
 
+        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+        {
+            window.draw((cityIter->second)->sprite);
+        }
         window.display();
     }
 
