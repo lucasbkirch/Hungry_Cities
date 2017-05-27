@@ -1,8 +1,15 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Cities.h"
-#include "WorldMap.h"
 
+#ifndef CITIES_H
+#define CITIES_H
+#include "Cities.h"
+#endif // CITIES_H
+
+#ifndef WORLDMAP_H
+#define WORLDMAP_H
+#include "WorldMap.h"
+#endif // WORLDMAP_H
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(640, 640), "Hungry City Chronicles");
@@ -13,6 +20,7 @@ int main()
     WorldMap world_map ("Images/map_1.png");
     world_map.InitializeTiles();
 
+    std::map<std::string, Mobile_Object *> mobileObjDict;
     std::map<std::string, City *> cityDict;
     std::map<std::string, City *> tempCityDict;
 
@@ -23,11 +31,14 @@ int main()
     StaticCity targetCity3 ("Berlin", 50, "Images/circle.png");
     StaticCity targetCity4 ("Kalingrad", 50, "Images/circle.png");
 
+    //Adding to cityDict all mobile and static cities
     cityDict.insert(std::pair<std::string, City *>(playerCity.name, &playerCity));
     cityDict.insert(std::pair<std::string, City *>(targetCity1.name, &targetCity1));
     cityDict.insert(std::pair<std::string, City *>(targetCity2.name, &targetCity2));
     cityDict.insert(std::pair<std::string, City *>(targetCity3.name, &targetCity3));
     cityDict.insert(std::pair<std::string, City *>(targetCity4.name, &targetCity4));
+
+    //Adding to
 
     sf::View view; // could be used later to show view radius changes
 
@@ -92,6 +103,9 @@ int main()
                 }
             }
         }
+
+//        world_map.terrainCollision();
+
         window.clear();
 
         //Update all cities

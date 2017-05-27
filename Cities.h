@@ -1,6 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
+#ifndef BASE_OBJ_H
+#define BASE_OBJ_H
 #include "Base_Obj.h"
+#endif // BASE_OBJ_H
 
 class City
 {
@@ -29,10 +33,10 @@ class PlayerCity: public MobileCity
         PlayerCity(std::string, int, std::string);
 };
 
-class StaticCity: public City
+
+class StaticCity: public City, public StaticObject
 {
     public:
-        int x, y;
         StaticCity(std::string, int, std::string);
         void update(PlayerCity);
 };

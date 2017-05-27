@@ -1,6 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+
+class StaticObject
+{
+    public:
+        int x, y;
+};
+
 class Mobile_Object
 {
     public:

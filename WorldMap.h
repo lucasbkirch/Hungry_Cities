@@ -1,5 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#ifndef BASE_OBJ_H
+#define BASE_OBJ_H
+#include "Base_Obj.h"
+#endif // BASE_OBJ_H
 
 class Point
 {
@@ -80,5 +84,6 @@ public:
     }
     void update(double, double);
     void InitializeTiles();
+    std::map<std::string, int> terrainCollision(Mobile_Object, sf::FloatRect);
 };
 
