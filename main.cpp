@@ -14,6 +14,8 @@
 void updateAll(PlayerCity*);
 void drawAll();
 void cityCollisionCheck();
+void eventManagement();
+void keyPressManagement(PlayerCity*);
 
 sf::RenderWindow window(sf::VideoMode(640, 640), "Hungry City Chronicles");
 WorldMap worldMap ("Images/map_1.png");
@@ -26,7 +28,7 @@ int main()
     Icon.loadFromFile("Images/wagon_wheel_icon.png");
     window.setIcon(32, 32, Icon.getPixelsPtr());
 
-    worldMap.InitializeTiles();
+    //worldMap.InitializeTiles();
 
     //Creating and adding all the city objects
     PlayerCity playerCity ("London", 100, "Images/city.png");
@@ -46,43 +48,51 @@ int main()
 
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        bool up_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-        bool down_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-        bool left_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-        bool right_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-
-        if (up_pressed)
-        {
-            playerCity.move("forward");
-        }
-        else if (down_pressed)
-        {
-            playerCity.move("backward");
-        }
-
-        if (left_pressed && (up_pressed ^ down_pressed))
-        {
-            playerCity.rotate("left");
-        }
-        else if (right_pressed && (up_pressed ^ down_pressed))
-        {
-            playerCity.rotate("right");
-        }
-
+        eventManagement();
+        keyPressManagement(&playerCity);
         cityCollisionCheck();
-
+        worldMap.terrainCollision(playerCity.x, playerCity.y, 100, playerCity.sprite);
         updateAll(&playerCity);
         drawAll();
     }
 
     return 0;
+}
+
+void eventManagement()
+{
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+            window.close();
+    }
+}
+
+void keyPressManagement(PlayerCity * playerCity)
+{
+    bool up_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+    bool down_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+    bool left_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    bool right_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+    if (up_pressed)
+    {
+        playerCity->move("forward");
+    }
+    else if (down_pressed)
+    {
+        playerCity->move("backward");
+    }
+
+    if (left_pressed && (up_pressed ^ down_pressed))
+    {
+        playerCity->rotate("left");
+    }
+    else if (right_pressed && (up_pressed ^ down_pressed))
+    {
+        playerCity->rotate("right");
+    }
 }
 
 void cityCollisionCheck()

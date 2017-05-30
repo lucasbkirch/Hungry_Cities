@@ -81,9 +81,11 @@ public:
     {
         texture.loadFromFile(mapFile);
         world.setTexture(texture);
+        InitializeTiles();
     }
+
     void update(double, double);
     void InitializeTiles();
-    std::map<std::string, int> terrainCollision(Mobile_Object, sf::FloatRect);
+    std::map<std::string, int> terrainCollision(double, double, int, sf::Sprite);
 };
 

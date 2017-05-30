@@ -42,7 +42,8 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
     {
         for (int yCoord = 0; yCoord < topY; yCoord += 20)
         {
-            TerrainTile targetTile = tileMap[xCoord / 20][yCoord/ 20];
+            std::cout << "(" << xCoord << ", " << yCoord << ")\n";
+            TerrainTile targetTile = tileMap.at(Point(xCoord, yCoord));
 
             if (targetTile.tile.getGlobalBounds().intersects(sprite.getGlobalBounds()))
             {
@@ -57,7 +58,6 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
                         std::cout << "Terrain Type " << targetTile.type << "Not recognized\n";
                     }
             }
-            //std::cout << "tile (" << xCoord << ", " << yCoord << ") checked\n" ;
         }
     }
     return collisionsCollection;
