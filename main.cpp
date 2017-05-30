@@ -11,20 +11,23 @@
 #include "WorldMap.h"
 #endif // WORLDMAP_H
 
-void updateAll(PlayerCity, WorldMap, std::map<std::string, City *>);
+void updateAll(PlayerCity*);
+void drawAll();
+
+sf::RenderWindow window(sf::VideoMode(640, 640), "Hungry City Chronicles");
+WorldMap worldMap ("Images/map_1.png");
+std::map<std::string, Mobile_Object *> mobileObjDict;
+std::map<std::string, City *> cityDict;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(640, 640), "Hungry City Chronicles");
+
     sf::Image Icon;
     Icon.loadFromFile("Images/wagon_wheel_icon.png");
     window.setIcon(32, 32, Icon.getPixelsPtr());
 
-    WorldMap worldMap ("Images/map_1.png");
     worldMap.InitializeTiles();
 
-    std::map<std::string, Mobile_Object *> mobileObjDict;
-    std::map<std::string, City *> cityDict;
     std::map<std::string, City *> tempCityDict;
 
     //Creating and adding all the city objects
@@ -83,6 +86,8 @@ int main()
         std::map<std::string, City *>::iterator cityIter;
         tempCityDict.insert(cityDict.begin(), cityDict.end());
 
+//        cityCollisionCheck();
+
         //Checking for collisions between any cities
         while(tempCityDict.size() > 0)
         {
@@ -107,44 +112,47 @@ int main()
             }
         }
 
-        updateAll(playerCity, worldMap, cityDict);
-
-//        worldMap.terrainCollision();
-
-        window.clear();
-
-        //Draw the map, cities and other objects in the world
-        window.draw(worldMap.world);
-
-        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
-        {
-            window.draw((cityIter->second)->sprite);
-        }
-        window.display();
+        updateAll(&playerCity);
+        drawAll();
     }
 
     return 0;
 }
 
-void updateAll(PlayerCity playerCity, WorldMap worldMap, std::map<std::string, City *> cityDict)
+void drawAll()
 {
-        std::map<std::string, City *>::iterator cityIter;
+    std::map<std::string, City *>::iterator cityIter;
+    window.clear();
+
+    //Draw the map, cities and other objects in the world
+    window.draw(worldMap.world);
+
+    for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+    {
+        window.draw((cityIter->second)->sprite);
+    }
+    window.display();
+
+}
+
+void updateAll(PlayerCity * playerCity)
+{
+    std::map<std::string, City *>::iterator cityIter;
 
         //Update all cities
-        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+    for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+    {
+
+        StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
+
+        if (static_type != NULL) //if Type StaticCity
         {
-
-            StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
-
-            if (static_type != NULL) //if Type StaticCity
-            {
-                static_type->update(playerCity);
-            }
-            else //playerCity: Since there is only every 1 player city, there is no need to cast the currently selected cityIter->second to PlayerCity type and update that.
-            {
-                playerCity.update();
-            }
+            static_type->update(*playerCity);
         }
-        worldMap.update(playerCity.x, playerCity.y);
-
+        else //playerCity: Since there is only every 1 player city, there is no need to cast the currently selected cityIter->second to PlayerCity type and update that.
+        {
+            playerCity->update();
+        }
+    }
+    worldMap.update(playerCity->x, playerCity->y);
 }
