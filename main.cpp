@@ -10,6 +10,9 @@
 #define WORLDMAP_H
 #include "WorldMap.h"
 #endif // WORLDMAP_H
+
+void updateAll(PlayerCity, WorldMap, std::map<std::string, City *>);
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(640, 640), "Hungry City Chronicles");
@@ -17,8 +20,8 @@ int main()
     Icon.loadFromFile("Images/wagon_wheel_icon.png");
     window.setIcon(32, 32, Icon.getPixelsPtr());
 
-    WorldMap world_map ("Images/map_1.png");
-    world_map.InitializeTiles();
+    WorldMap worldMap ("Images/map_1.png");
+    worldMap.InitializeTiles();
 
     std::map<std::string, Mobile_Object *> mobileObjDict;
     std::map<std::string, City *> cityDict;
@@ -104,9 +107,28 @@ int main()
             }
         }
 
-//        world_map.terrainCollision();
+        updateAll(playerCity, worldMap, cityDict);
+
+//        worldMap.terrainCollision();
 
         window.clear();
+
+        //Draw the map, cities and other objects in the world
+        window.draw(worldMap.world);
+
+        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+        {
+            window.draw((cityIter->second)->sprite);
+        }
+        window.display();
+    }
+
+    return 0;
+}
+
+void updateAll(PlayerCity playerCity, WorldMap worldMap, std::map<std::string, City *> cityDict)
+{
+        std::map<std::string, City *>::iterator cityIter;
 
         //Update all cities
         for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
@@ -123,17 +145,6 @@ int main()
                 playerCity.update();
             }
         }
-        world_map.update(playerCity.x, playerCity.y);
+        worldMap.update(playerCity.x, playerCity.y);
 
-        //Draw the map, cities and other objects in the world
-        window.draw(world_map.world);
-
-        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
-        {
-            window.draw((cityIter->second)->sprite);
-        }
-        window.display();
-    }
-
-    return 0;
 }
