@@ -13,6 +13,7 @@
 
 void updateAll(PlayerCity*);
 void drawAll();
+void cityCollisionCheck();
 
 sf::RenderWindow window(sf::VideoMode(640, 640), "Hungry City Chronicles");
 WorldMap worldMap ("Images/map_1.png");
@@ -21,14 +22,11 @@ std::map<std::string, City *> cityDict;
 
 int main()
 {
-
     sf::Image Icon;
     Icon.loadFromFile("Images/wagon_wheel_icon.png");
     window.setIcon(32, 32, Icon.getPixelsPtr());
 
     worldMap.InitializeTiles();
-
-    std::map<std::string, City *> tempCityDict;
 
     //Creating and adding all the city objects
     PlayerCity playerCity ("London", 100, "Images/city.png");
@@ -44,9 +42,7 @@ int main()
     cityDict.insert(std::pair<std::string, City *>(targetCity3.name, &targetCity3));
     cityDict.insert(std::pair<std::string, City *>(targetCity4.name, &targetCity4));
 
-    //Adding to
-
-    sf::View view; // could be used later to show view radius changes
+    //sf::View view; // TODO could be used later to show view radius changes
 
     while (window.isOpen())
     {
@@ -80,43 +76,48 @@ int main()
             playerCity.rotate("right");
         }
 
-        //Create Temp dictionary so that the current city won't be asked if it
-        //intersects itself by removing it from the temp dictionary prior to
-        //comparison with all other cities in the temp dictionary
-        std::map<std::string, City *>::iterator cityIter;
-        tempCityDict.insert(cityDict.begin(), cityDict.end());
-
-//        cityCollisionCheck();
-
-        //Checking for collisions between any cities
-        while(tempCityDict.size() > 0)
-        {
-            City currCity = *(tempCityDict.begin()->second);
-            tempCityDict.erase(tempCityDict.begin()->first);
-
-            for(cityIter = tempCityDict.begin(); cityIter != tempCityDict.end(); cityIter++)
-            {
-                if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
-                {
-                    std::cout << "Collision between the cities " << currCity.name << currCity.size_ << " and " << cityIter->first << (cityIter->second)->size_  << "\n";
-                    //TODO Handle Collision!
-                    if (currCity.size_ >= (cityIter->second)->size_)
-                    {
-                        cityDict.erase((cityIter->second)->name);
-                    }
-                    else
-                    {
-                        cityDict.erase(currCity.name);
-                    }
-                }
-            }
-        }
+        cityCollisionCheck();
 
         updateAll(&playerCity);
         drawAll();
     }
 
     return 0;
+}
+
+void cityCollisionCheck()
+{
+    //Create Temp dictionary so that the current city won't be asked if it
+    //intersects itself by removing it from the temp dictionary prior to
+    //comparison with all other cities in the temp dictionary
+    std::map<std::string, City *>::iterator cityIter;
+    std::map<std::string, City *> tempCityDict;
+
+    tempCityDict.insert(cityDict.begin(), cityDict.end());
+
+    //Checking for collisions between any cities
+    while(tempCityDict.size() > 0)
+    {
+        City currCity = *(tempCityDict.begin()->second);
+        tempCityDict.erase(tempCityDict.begin()->first);
+
+        for(cityIter = tempCityDict.begin(); cityIter != tempCityDict.end(); cityIter++)
+        {
+            if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
+            {
+                std::cout << "Collision between the cities " << currCity.name << currCity.size_ << " and " << cityIter->first << (cityIter->second)->size_  << "\n";
+                //TODO Handle Collision!
+                if (currCity.size_ >= (cityIter->second)->size_)
+                {
+                    cityDict.erase((cityIter->second)->name);
+                }
+                else
+                {
+                    cityDict.erase(currCity.name);
+                }
+            }
+        }
+    }
 }
 
 void drawAll()

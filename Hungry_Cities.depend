@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1496157935 source:c:\users\lucas kirchhoff\documents\cs future\codeblocks_projects\hungry_cities\main.cpp
+1496159886 source:c:\users\lucas kirchhoff\documents\cs future\codeblocks_projects\hungry_cities\main.cpp
 	<SFML/Graphics.hpp>
+	<SFML/OpenGL.hpp>
 	<iostream>
 	"Cities.h"
 	"WorldMap.h"
@@ -422,4 +423,18 @@
 1496083357 source:c:\users\lucas kirchhoff\documents\cs future\codeblocks_projects\hungry_cities\worldmap.cpp
 	"WorldMap.h"
 	<list>
+
+1486739998 c:\users\lucas kirchhoff\documents\cs future\sfml-2.4.2\include\sfml\opengl.hpp
+	<SFML/Config.hpp>
+	<windows.h>
+	<GL/gl.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GL/gl.h>
+	<OpenGL/gl.h>
+	<OpenGLES/ES1/gl.h>
+	<OpenGLES/ES1/glext.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+	<GLES2/gl2ext.h>
 
