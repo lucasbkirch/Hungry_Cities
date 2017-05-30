@@ -51,7 +51,21 @@ int main()
         eventManagement();
         keyPressManagement(&playerCity);
         cityCollisionCheck();
-        worldMap.terrainCollision(playerCity.x, playerCity.y, 100, playerCity.sprite);
+
+
+        std::map<Point, TerrainTile>::iterator tileIter;
+        bool high = true;
+        if (high)
+        {
+            tileIter = worldMap.tileMap.begin();
+            while (tileIter != worldMap.tileMap.end())
+            {
+                std::cout << "(" << tileIter->first.x << ", " << tileIter->first.y << ")" << "\n";
+                tileIter++;
+            }
+            high = false;
+        }
+        //worldMap.terrainCollision(playerCity.x, playerCity.y, 100, playerCity.sprite);
         updateAll(&playerCity);
         drawAll();
     }

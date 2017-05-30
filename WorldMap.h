@@ -4,6 +4,10 @@
 #define BASE_OBJ_H
 #include "Base_Obj.h"
 #endif // BASE_OBJ_H
+//#ifndef STRING
+//#define STRING
+#include <sstream>
+//#endif // STRING
 
 class Point
 {
