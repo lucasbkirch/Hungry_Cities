@@ -6,13 +6,28 @@ std::string terrainTypes[] = {"grass", "snow", "rock", "dirt", "water"};
 
 void WorldMap::InitializeTiles()
 {
+    int currSize = 0;
     int i = 0;
     int j = 0;
     while (i < world.getGlobalBounds().width)
     {
         while (j < world.getGlobalBounds().height)
         {
-            tileMap.insert(std::pair<Point, TerrainTile>(Point(i, j), TerrainTile(i, j, "grass"))); //TODO
+            currSize = tileMap.size();
+            //std::cout << "Inserting: "<< i << ", " << j << "\n";
+            tileMap.insert(std::pair<std::pair<int, int>, TerrainTile>(std::make_pair(i, j), TerrainTile(i, j, "grass"))); //TODO
+
+            //std::cout << currSize << " " << tileMap.size() << "\n";
+            if (currSize == tileMap.size())
+            {
+                std::cout << "Insertion Failed!\n";
+            }
+            else
+            {
+                //std::cout << "Retrieving: "<< i << ", " << j << "\n";
+                //TerrainTile tt = tileMap[Point(i, j)];//This was adding an additional item to tileMap??????
+                //TerrainTile tt = tileMap.at(Point(i, j)); //This gets an out of range error upon calling the (0, 20) point
+            }
             j += 20;
         }
         j = 0;
@@ -42,20 +57,24 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
     {
         for (int yCoord = 0; yCoord < topY; yCoord += 20)
         {
-            std::cout << "(" << xCoord << ", " << yCoord << ")\n";
-            TerrainTile targetTile = tileMap.at(Point(xCoord, yCoord));
+            //std::cout << "(" << xCoord << ", " << yCoord << ")\n";
+            TerrainTile targetTile = tileMap.at(std::make_pair(xCoord, yCoord));
+
+            //std::cout << targetTile.type << " at (" << targetTile.x << ", " << targetTile.y << ")\n";
 
             if (targetTile.tile.getGlobalBounds().intersects(sprite.getGlobalBounds()))
             {
-                for (int v = 0; v < terrainTypesLength; v++)
+                bool found = false;
+                for (int v = 0; v < terrainTypesLength && !found; v++)
                     if (targetTile.type.compare(terrainTypes[v]))
                     {
+                        std::cout << "TERRAIN MATCH\n";
                         collisionsCollection.at(targetTile.type)++;
-                        break;
+                        found = true;
                     }
                     else
                     {
-                        std::cout << "Terrain Type " << targetTile.type << "Not recognized\n";
+                        std::cout << "Terrain Type " << targetTile.type << " not recognized\n";
                     }
             }
         }

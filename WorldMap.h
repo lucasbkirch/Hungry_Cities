@@ -5,10 +5,8 @@
 #include "Base_Obj.h"
 #endif // BASE_OBJ_H
 //#ifndef STRING
-//#define STRING
-#include <sstream>
-//#endif // STRING
 
+/*
 class Point
 {
     public:
@@ -19,11 +17,12 @@ class Point
             y = yPos;
         }
 
-        bool operator <(const Point& rhs) const
+        bool operator < (const Point& rhs) const
         {
             return !(rhs.x == x && rhs.y == y);
         }
-};
+    private:
+};*/
 
 class TerrainTile
 {
@@ -32,6 +31,13 @@ public:
     int x, y;
     std::string type;
     double speedModifier;
+    /*TerrainTile()
+    {
+        x = -1;
+        y = -1;
+        type = "unknown";
+        speedModifier = 0;
+    }*/
 
     TerrainTile(int xPos, int yPos, std::string typeName)
     {
@@ -79,7 +85,7 @@ class WorldMap
 public:
     sf::Sprite world;
     sf::Texture texture;
-    std::map<Point, TerrainTile> tileMap;
+    std::map<std::pair<int, int>, TerrainTile> tileMap;
 
     WorldMap(std::string mapFile)
     {
