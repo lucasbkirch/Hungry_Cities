@@ -2,12 +2,8 @@
 
 void HungryCitiesGame::run()
 {
-    sf::Image Icon;
-    Icon.loadFromFile("Images/wagon_wheel_icon.png");
-    window.setIcon(32, 32, Icon.getPixelsPtr());
-
     //Creating and adding all the city objects
-    PlayerCity * playerCity = cityInitialization();
+    PlayerCity * playerCity = cityInitialization("Images/city.png", "Images/circle.png");
 
     //sf::View view; // TODO could be used later to show view radius changes
     int terrainCheckTimer = 0;
@@ -19,9 +15,11 @@ void HungryCitiesGame::run()
         keyPressManagement(playerCity);
         cityCollisionCheck();
 
-        if (terrainCheckTimer >= 20)
+        if (terrainCheckTimer >= WAIT_CYCLES)
         {
-            worldMap.terrainCollision(playerCity->x, playerCity->y, 100, playerCity->sprite);
+            std::cout << playerCity->sprite.getGlobalBounds().height << "\n";
+            std::map<std::string, int> collisions = worldMap.terrainCollision(playerCity->x, playerCity->y, playerCity->sprite.getGlobalBounds().height, playerCity->sprite);
+            std::cout << collisions.size() << "\n";
             terrainCheckTimer = 0;
         }
         else
@@ -32,22 +30,27 @@ void HungryCitiesGame::run()
     }
 
     cleanUp();
-
 }
 
 void HungryCitiesGame::cleanUp()
 {
     std::cout << "Cleanup\n";
+    std::map<std::string, City *>::iterator cityIter;
+    for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+    {
+        std::cout << "deallocating " << cityIter->second->name << "\n";
+        delete cityIter->second;
+    }
 }
 
-PlayerCity * HungryCitiesGame::cityInitialization()
+PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, std::string staticCityImage)
 {
     //Creating and adding all the city objects
-    PlayerCity * playerCity = new PlayerCity("London", 100, "Images/city.png");
-    StaticCity * targetCity1 = new StaticCity("Amsterdam", 50, "Images/circle.png");
-    StaticCity * targetCity2 = new StaticCity("Paris", 50, "Images/circle.png");
-    StaticCity * targetCity3 = new StaticCity("Berlin", 50, "Images/circle.png");
-    StaticCity * targetCity4 = new StaticCity("Kalingrad", 50, "Images/circle.png");
+    PlayerCity * playerCity = new PlayerCity("London",     100, mobileCityImage);
+    StaticCity * targetCity1 = new StaticCity("Paris",     50,  staticCityImage);
+    StaticCity * targetCity2 = new StaticCity("Berlin",    50,  staticCityImage);
+    StaticCity * targetCity3 = new StaticCity("Kalingrad", 50,  staticCityImage);
+    StaticCity * targetCity4 = new StaticCity("Amsterdam", 50,  staticCityImage);
 
     //Adding to cityDict all mobile and static cities
     cityDict.insert(std::pair<std::string, City *>(playerCity->name, playerCity));

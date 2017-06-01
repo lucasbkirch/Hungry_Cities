@@ -37,6 +37,8 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
     int topY = (y + largestSide / 2) / 20;
     topY *= 20;
 
+    std::cout << "x: " << topX <<" " << bottomX << " y:" << topY << " " << bottomY << "\n";
+
     for (int xCoord = 0; xCoord < topX; xCoord += 20)
         for (int yCoord = 0; yCoord < topY; yCoord += 20)
         {
@@ -56,6 +58,8 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
                     std::cout << "Terrain Type " << targetTile.type << " not recognized\n";
             }
         }
+
+    std::cout << "TERRAIN " << collisionsCollection.size() << "\n";
 
     return collisionsCollection;
 }
