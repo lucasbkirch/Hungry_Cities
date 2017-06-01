@@ -4,25 +4,6 @@
 #define BASE_OBJ_H
 #include "Base_Obj.h"
 #endif // BASE_OBJ_H
-//#ifndef STRING
-
-/*
-class Point
-{
-    public:
-        int x, y;
-        Point(int xPos, int yPos)
-        {
-            x = xPos;
-            y = yPos;
-        }
-
-        bool operator < (const Point& rhs) const
-        {
-            return !(rhs.x == x && rhs.y == y);
-        }
-    private:
-};*/
 
 class TerrainTile
 {
@@ -31,13 +12,6 @@ public:
     int x, y;
     std::string type;
     double speedModifier;
-    /*TerrainTile()
-    {
-        x = -1;
-        y = -1;
-        type = "unknown";
-        speedModifier = 0;
-    }*/
 
     TerrainTile(int xPos, int yPos, std::string typeName)
     {
