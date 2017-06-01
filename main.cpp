@@ -45,14 +45,20 @@ int main()
     cityDict.insert(std::pair<std::string, City *>(targetCity4.name, &targetCity4));
 
     //sf::View view; // TODO could be used later to show view radius changes
-
+    int terrainCheckTimer = 0;
     while (window.isOpen())
     {
         eventManagement();
         keyPressManagement(&playerCity);
         cityCollisionCheck();
 
-        worldMap.terrainCollision(playerCity.x, playerCity.y, 100, playerCity.sprite);
+        if (terrainCheckTimer >= 20)
+        {
+            worldMap.terrainCollision(playerCity.x, playerCity.y, 100, playerCity.sprite);
+            terrainCheckTimer = 0;
+        }
+        else
+            terrainCheckTimer++;
 
         updateAll(&playerCity);
         drawAll();

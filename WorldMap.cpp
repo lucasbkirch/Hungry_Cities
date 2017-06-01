@@ -66,7 +66,7 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
                     if (targetTile.type.compare(terrainTypes[v]))
                     {
                         collisionsCollection.at(targetTile.type)++;
-                        std::cout << collisionsCollection.at(targetTile.type) << "\n";
+//                        std::cout << collisionsCollection.at(targetTile.type) << "\n";
                         found = true;
                         break;
                     }
