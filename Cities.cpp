@@ -50,6 +50,8 @@ PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): Mo
     x = 2500;
     y = 2500;
     sprite.setPosition(x, y);
+}
+
 void MobileCity::update()
 {
     sprite.setPosition(x, y);
