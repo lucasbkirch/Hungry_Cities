@@ -31,7 +31,6 @@ class PlayerCity: public MobileCity
 {
 
     public:
-        sf::Sprite drawSprite;
         PlayerCity(std::string, int, std::string);
         void update();
 };
@@ -41,6 +40,5 @@ class StaticCity: public City, public StaticObject
 {
     public:
         StaticCity(std::string, int, std::string);
-        void update(PlayerCity);
 };
 

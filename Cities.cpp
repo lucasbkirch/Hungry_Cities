@@ -2,8 +2,7 @@
 #include <cmath>
 #include <iostream>
 #define PI 3.14159265
-
-
+#include <time.h>
 
 City::City(std::string cityName, int sz, std::string txturName)
 {
@@ -46,6 +45,11 @@ void MobileCity::rotate(std::string turn)
     }
 }
 
+PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): MobileCity(cityName, sz, txtureName)
+{
+    x = 2500;
+    y = 2500;
+    sprite.setPosition(x, y);
 void MobileCity::update()
 {
     sprite.setPosition(x, y);
@@ -67,27 +71,7 @@ StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
     sprite.setOrigin(50, 50);
 }
 
-void StaticCity::update(PlayerCity playerCity)
-{
-    sprite.setPosition(x - playerCity.x, y - playerCity.y);
-}
-
-PlayerCity::PlayerCity(std::string cityName, int sz, std::string txturName)
-: MobileCity(cityName, sz, txturName)
-{
-    sprite.setPosition(x, y);
-    drawSprite.setTexture(texture);
-    drawSprite.setPosition(320, 320);
-}
-
 void PlayerCity::update()
 {
-    sprite.setPosition(x, y);
-
-    drawSprite.setRotation(-angle);
-    if (angle > 360 || angle < -360)
-    {
-        angle = (int)angle % 360;
-    }
-
+    MobileCity::update();
 }

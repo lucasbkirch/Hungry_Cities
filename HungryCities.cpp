@@ -2,15 +2,19 @@
 
 void HungryCitiesGame::run()
 {
+    srand(time(NULL));
+
     //Creating and adding all the city objects
     PlayerCity * playerCity = cityInitialization("Images/city.png", "Images/circle.png");
 
-    //sf::View view; // TODO could be used later to show view radius changes
+    sf::View view; // TODO could be used later to show view radius changes
+
     int terrainCheckTimer = 0;
 
     //Game Loop
     while (window.isOpen())
     {
+        view.reset(sf::FloatRect(playerCity->x - (360 - 25), playerCity->y - (360 - 50), 640, 640));
         eventManagement();
         keyPressManagement(playerCity);
         cityCollisionCheck();
@@ -18,13 +22,15 @@ void HungryCitiesGame::run()
         if (terrainCheckTimer >= WAIT_CYCLES)
         {
             std::map<std::string, int> collisions = worldMap.terrainCollision(playerCity->x, playerCity->y, playerCity->sprite.getGlobalBounds().height, playerCity->sprite);
+            std::cout << collisions["grass"] << "\n";
             terrainCheckTimer = 0;
         }
         else
             terrainCheckTimer++;
 
-        updateAll(playerCity);
+        updateAll();
         drawAll();
+        window.setView(view);
     }
 
     cleanUp();
@@ -151,7 +157,7 @@ void HungryCitiesGame::drawAll()
             //an extra sprite was made for playerCity because a sprite is used for Collisions AND for drawing.
             //However, drawing for a player city is NOT attached to its curreny (x, y) as it is always in the center of the screen
             //BUT this conflicts with the drawing. Therefore, I made an additional sprite that is drawn for the playercity
-            window.draw(playerType->drawSprite);
+            window.draw(playerType->sprite);
             //How to draw the playerCity sprite in the middle of the  screen without also affecting the location of the player
             //Cities Sprite? Make another sprite? One for drawing one for collision?
         }
@@ -160,7 +166,7 @@ void HungryCitiesGame::drawAll()
 
 }
 
-void HungryCitiesGame::updateAll(PlayerCity * playerCity)
+void HungryCitiesGame::updateAll()
 {
     std::map<std::string, City *>::iterator cityIter;
 
@@ -168,16 +174,16 @@ void HungryCitiesGame::updateAll(PlayerCity * playerCity)
     for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
     {
 
-        StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
+        PlayerCity* player_type = dynamic_cast<PlayerCity*>(cityIter->second);
 
-        if (static_type != NULL) //if Type StaticCity
+        if (player_type == NULL) //if Type StaticCity
         {
-            static_type->update(*playerCity);
+            StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
         }
         else //playerCity: Since there is only every 1 player city, there is no need to cast the currently selected cityIter->second to PlayerCity type and update that.
         {
-            playerCity->update();
+            player_type->update();
         }
     }
-    worldMap.update(playerCity->x, playerCity->y);
+//    worldMap.update(playerCity->x, playerCity->y);
 }

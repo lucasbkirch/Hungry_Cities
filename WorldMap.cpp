@@ -37,6 +37,7 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
     int topY = (y + largestSide / 2) / tileSideLength;
     topY *= tileSideLength;
 
+    //Set collisionsCollection entries to zero if it was used earlier
     for (int f = 0; f < terrainTypesLength; f++)
     {
         collisionsCollection[terrainTypes[f]] = 0;
@@ -65,7 +66,3 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
     return collisionsCollection;
 }
 
-void WorldMap::update(double player_x, double player_y)
-{
-    world.setPosition(0 - player_x, 0 - player_y);
-}

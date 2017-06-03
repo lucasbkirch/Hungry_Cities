@@ -27,7 +27,7 @@ class HungryCitiesGame
             window.setIcon(32, 32, Icon.getPixelsPtr());
         }
 
-        void updateAll(PlayerCity*);
+        void updateAll();
         void drawAll();
         void cityCollisionCheck();
         void eventManagement();

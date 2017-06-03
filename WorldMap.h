@@ -79,7 +79,6 @@ class WorldMap
                 collisionsCollection.insert(std::pair<std::string, int>(terrainTypes[g], 0));
         }
 
-        void update(double, double);
         void InitializeTiles();
         std::map<std::string, int> terrainCollision(double, double, int, sf::Sprite);
 };
