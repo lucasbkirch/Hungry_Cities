@@ -27,14 +27,14 @@ void WorldMap::InitializeTiles()
 
 std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int largestSide, sf::Sprite sprite)
 {
-    int bottomX = (x - largestSide / 2) / tileSideLength;
+    int bottomX = (x - largestSide) / tileSideLength;
     bottomX *= tileSideLength;
-    int topX = (x + largestSide / 2) / tileSideLength;
+    int topX = (x + largestSide) / tileSideLength;
     topX *= tileSideLength;
 
-    int bottomY = (y - largestSide / 2) / tileSideLength;
+    int bottomY = (y - largestSide) / tileSideLength;
     bottomY *= tileSideLength;
-    int topY = (y + largestSide / 2) / tileSideLength;
+    int topY = (y + largestSide) / tileSideLength;
     topY *= tileSideLength;
 
     //Set collisionsCollection entries to zero if it was used earlier

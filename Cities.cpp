@@ -70,7 +70,7 @@ StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
     std::cout << "Placed at (" << x << ", " << y << ")\n";
     sprite.setPosition(x, y);
     sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
-    sprite.setOrigin(50, 50);
+    sprite.setOrigin(25, 50);
 }
 
 void PlayerCity::update()

@@ -14,6 +14,7 @@ void HungryCitiesGame::run()
     //Game Loop
     while (window.isOpen())
     {
+        //allows view to center on the playerCity
         view.reset(sf::FloatRect(playerCity->x - (360 - 25), playerCity->y - (360 - 50), 640, 640));
         eventManagement();
         keyPressManagement(playerCity);
