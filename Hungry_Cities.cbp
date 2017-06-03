@@ -74,6 +74,8 @@
 		<Unit filename="Base_Obj.h" />
 		<Unit filename="Cities.cpp" />
 		<Unit filename="Cities.h" />
+		<Unit filename="HungryCities.cpp" />
+		<Unit filename="HungryCities.h" />
 		<Unit filename="Images/circle.png" />
 		<Unit filename="Images/city.png" />
 		<Unit filename="Images/dirt_terrain.png" />

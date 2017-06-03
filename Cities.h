@@ -29,8 +29,11 @@ class MobileCity: public City, public Mobile_Object
 
 class PlayerCity: public MobileCity
 {
+
     public:
+        sf::Sprite drawSprite;
         PlayerCity(std::string, int, std::string);
+        void update();
 };
 
 

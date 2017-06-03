@@ -7,10 +7,10 @@
 
 City::City(std::string cityName, int sz, std::string txturName)
 {
-    size_ = sz;
-    name = cityName;
-    texture.loadFromFile(txturName);
-    sprite.setTexture(texture);
+        size_ = sz;
+        name = cityName;
+        texture.loadFromFile(txturName);
+        sprite.setTexture(texture);
 }
 
 MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
@@ -48,7 +48,7 @@ void MobileCity::rotate(std::string turn)
 
 void MobileCity::update()
 {
-    sprite.setPosition(320, 320);
+    sprite.setPosition(x, y);
     sprite.setRotation(-angle);
     if (angle > 360 || angle < -360)
     {
@@ -75,6 +75,19 @@ void StaticCity::update(PlayerCity playerCity)
 PlayerCity::PlayerCity(std::string cityName, int sz, std::string txturName)
 : MobileCity(cityName, sz, txturName)
 {
-    sprite.setPosition(320, 320);
+    sprite.setPosition(x, y);
+    drawSprite.setTexture(texture);
+    drawSprite.setPosition(320, 320);
 }
 
+void PlayerCity::update()
+{
+    sprite.setPosition(x, y);
+
+    drawSprite.setRotation(-angle);
+    if (angle > 360 || angle < -360)
+    {
+        angle = (int)angle % 360;
+    }
+
+}

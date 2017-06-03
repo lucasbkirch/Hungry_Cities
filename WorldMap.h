@@ -5,12 +5,15 @@
 #include "Base_Obj.h"
 #endif // BASE_OBJ_H
 
+#define tileSideLength 20
+
 class TerrainTile
 {
 public:
     sf::Sprite tile;
     int x, y;
     std::string type;
+    sf::Texture texture;
     double speedModifier;
 
     TerrainTile(int xPos, int yPos, std::string typeName)
@@ -18,8 +21,8 @@ public:
         x = xPos;
         y = yPos;
         setTerrainType(typeName);
+        tile.setTextureRect(sf::IntRect(0, 0, tileSideLength, tileSideLength));
         tile.setPosition(x, y);
-        tile.setTextureRect(sf::IntRect(0, 0, 20, 20));
     }
 
     void setTerrainType(std::string typeName)
@@ -55,21 +58,29 @@ public:
 
 class WorldMap
 {
+    public:
+        sf::Sprite world;
+        sf::Texture texture;
+        std::map<std::pair<int, int>, TerrainTile *> tileMap;
+        int terrainTypesLength;
 
-public:
-    sf::Sprite world;
-    sf::Texture texture;
-    std::map<std::pair<int, int>, TerrainTile> tileMap;
+        std::string terrainTypes[5];
+        std::map<std::string, int> collisionsCollection;
 
-    WorldMap(std::string mapFile)
-    {
-        texture.loadFromFile(mapFile);
-        world.setTexture(texture);
-        InitializeTiles();
-    }
 
-    void update(double, double);
-    void InitializeTiles();
-    std::map<std::string, int> terrainCollision(double, double, int, sf::Sprite);
+        WorldMap(std::string mapFile) : terrainTypes{"grass", "snow", "rock", "dirt", "water"}
+        {
+            texture.loadFromFile(mapFile);
+            world.setTexture(texture);
+            InitializeTiles();
+
+            terrainTypesLength = 5;
+            for (int g = 0; g < terrainTypesLength; g++)
+                collisionsCollection.insert(std::pair<std::string, int>(terrainTypes[g], 0));
+        }
+
+        void update(double, double);
+        void InitializeTiles();
+        std::map<std::string, int> terrainCollision(double, double, int, sf::Sprite);
 };
 

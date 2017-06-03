@@ -17,9 +17,7 @@ void HungryCitiesGame::run()
 
         if (terrainCheckTimer >= WAIT_CYCLES)
         {
-            std::cout << playerCity->sprite.getGlobalBounds().height << "\n";
             std::map<std::string, int> collisions = worldMap.terrainCollision(playerCity->x, playerCity->y, playerCity->sprite.getGlobalBounds().height, playerCity->sprite);
-            std::cout << collisions.size() << "\n";
             terrainCheckTimer = 0;
         }
         else
@@ -144,7 +142,19 @@ void HungryCitiesGame::drawAll()
 
     for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
     {
-        window.draw((cityIter->second)->sprite);
+        PlayerCity* playerType = dynamic_cast<PlayerCity*>(cityIter->second);
+
+        if (playerType == NULL) //Non-playercity
+            window.draw((cityIter->second)->sprite);
+        else
+        {
+            //an extra sprite was made for playerCity because a sprite is used for Collisions AND for drawing.
+            //However, drawing for a player city is NOT attached to its curreny (x, y) as it is always in the center of the screen
+            //BUT this conflicts with the drawing. Therefore, I made an additional sprite that is drawn for the playercity
+            window.draw(playerType->drawSprite);
+            //How to draw the playerCity sprite in the middle of the  screen without also affecting the location of the player
+            //Cities Sprite? Make another sprite? One for drawing one for collision?
+        }
     }
     window.display();
 

@@ -1,66 +1,67 @@
 #include "WorldMap.h"
 
-int terrainTypesLength = 5;
-std::string terrainTypes[] = {"grass", "snow", "rock", "dirt", "water"};
-
 void WorldMap::InitializeTiles()
 {
-    int currSize = 0;
     int i = 0;
     int j = 0;
     while (i < world.getGlobalBounds().width)
     {
         while (j < world.getGlobalBounds().height)
         {
-            tileMap.insert(std::pair<std::pair<int, int>, TerrainTile>(std::make_pair(i, j), TerrainTile(i, j, "grass"))); //TODO
-            j += 20;
+            if (i == 0 && j == 0)
+            {
+                std::cout << "0, 0\n";
+                TerrainTile * tt = new TerrainTile(i, j, "grass");
+                sf::Texture texture;
+                texture.loadFromFile("Images/circle.png");
+                tt->tile.setTexture(texture);
+            }
+            else
+                tileMap.insert(std::pair<std::pair<int, int>, TerrainTile *>(std::make_pair(i, j), new TerrainTile(i, j, "grass"))); //TODO
+            j += tileSideLength;
         }
         j = 0;
-        i += 20;
+        i += tileSideLength;
     }
 }
 
 std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int largestSide, sf::Sprite sprite)
 {
-    std::map<std::string, int> collisionsCollection;
+    int bottomX = (x - largestSide / 2) / tileSideLength;
+    bottomX *= tileSideLength;
+    int topX = (x + largestSide / 2) / tileSideLength;
+    topX *= tileSideLength;
 
-    for (int g = 0; g < terrainTypesLength; g++)
-        collisionsCollection.insert(std::pair<std::string, int>(terrainTypes[g], 0));
+    int bottomY = (y - largestSide / 2) / tileSideLength;
+    bottomY *= tileSideLength;
+    int topY = (y + largestSide / 2) / tileSideLength;
+    topY *= tileSideLength;
 
-    int bottomX = (x - largestSide / 2) / 20;
-    bottomX *= 20;
-    int topX = (x + largestSide / 2) / 20;
-    topX *= 20;
+    for (int f = 0; f < terrainTypesLength; f++)
+    {
+        collisionsCollection[terrainTypes[f]] = 0;
+    }
 
-    int bottomY = (y - largestSide / 2) / 20;
-    bottomY *= 20;
-    int topY = (y + largestSide / 2) / 20;
-    topY *= 20;
-
-    std::cout << "x: " << topX <<" " << bottomX << " y:" << topY << " " << bottomY << "\n";
-
-    for (int xCoord = 0; xCoord < topX; xCoord += 20)
-        for (int yCoord = 0; yCoord < topY; yCoord += 20)
+    for (int xCoord = bottomX; xCoord < topX; xCoord += tileSideLength)
+        for (int yCoord = bottomY; yCoord < topY; yCoord += tileSideLength)
         {
-            TerrainTile targetTile = tileMap.at(std::make_pair(xCoord, yCoord));
-            if (targetTile.tile.getGlobalBounds().intersects(sprite.getGlobalBounds()))
+            TerrainTile * targetTile = tileMap.at(std::make_pair(xCoord, yCoord));
+
+            if (targetTile->tile.getGlobalBounds().intersects(sprite.getGlobalBounds()))
             {
                 bool found = false;
                 for (int v = 0; v < terrainTypesLength && !found; v++)
                 {
-                    if (targetTile.type.compare(terrainTypes[v]))
+                    if (targetTile->type.compare(terrainTypes[v]))
                     {
-                        collisionsCollection.at(targetTile.type)++;
+                        collisionsCollection[targetTile->type]++;
                         found = true;
                     }
                 }
                 if (!found)
-                    std::cout << "Terrain Type " << targetTile.type << " not recognized\n";
+                    std::cout << "Terrain Type " << targetTile->type << " not recognized\n";
             }
         }
-
-    std::cout << "TERRAIN " << collisionsCollection.size() << "\n";
-
     return collisionsCollection;
 }
 
