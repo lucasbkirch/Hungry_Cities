@@ -61,6 +61,7 @@ public:
 class WorldMap
 {
     public:
+
         sf::Sprite world;
         sf::Texture texture;
         std::map<std::pair<int, int>, TerrainTile *> tileMap;

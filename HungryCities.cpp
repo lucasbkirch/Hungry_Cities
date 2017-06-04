@@ -26,12 +26,19 @@ void HungryCitiesGame::run()
             std::list<TerrainTile *>::iterator collisionsIter;
             double modifierSum = 0;
 
+            sf::Image dirtImage;
+            dirtImage.loadFromFile("Images/dirt_terrain.png");
+
             for (collisionsIter = collisions.begin(); collisionsIter != collisions.end(); collisionsIter++)
             {
                 modifierSum += (*collisionsIter)->speedModifier;
+                if((*collisionsIter)->type.compare("grass") == 0)
+                {
+                    (*collisionsIter)->setTerrainType("dirt");
+                    worldMap.texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
+                }
             }
             playerCity->moveSpd = playerCity->baseMoveSpd * (modifierSum / collisions.size());
-            std::cout << playerCity->baseMoveSpd << "\n";
             terrainCheckTimer = 0;
         }
         else
