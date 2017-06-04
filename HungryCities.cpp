@@ -22,8 +22,16 @@ void HungryCitiesGame::run()
 
         if (terrainCheckTimer >= WAIT_CYCLES)
         {
-            std::map<std::string, int> collisions = worldMap.terrainCollision(playerCity->x, playerCity->y, playerCity->sprite.getGlobalBounds().height, playerCity->sprite);
-            std::cout << collisions["grass"] << "\n";
+            std::list<TerrainTile *> collisions = worldMap.terrainCollision(playerCity->x, playerCity->y, playerCity->sprite.getGlobalBounds().height, playerCity->sprite);
+            std::list<TerrainTile *>::iterator collisionsIter;
+            double modifierSum = 0;
+
+            for (collisionsIter = collisions.begin(); collisionsIter != collisions.end(); collisionsIter++)
+            {
+                modifierSum += (*collisionsIter)->speedModifier;
+            }
+            playerCity->moveSpd = playerCity->baseMoveSpd * (modifierSum / collisions.size());
+            std::cout << playerCity->baseMoveSpd << "\n";
             terrainCheckTimer = 0;
         }
         else
@@ -179,7 +187,8 @@ void HungryCitiesGame::updateAll()
 
         if (player_type == NULL) //if Type StaticCity
         {
-            StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
+            //StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
+            // No need to update --- //static_type->update();
         }
         else //playerCity: Since there is only every 1 player city, there is no need to cast the currently selected cityIter->second to PlayerCity type and update that.
         {

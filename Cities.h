@@ -21,7 +21,6 @@ class MobileCity: public City, public Mobile_Object
 {
     public:
         MobileCity(std::string, int, std::string);
-        //Mobile_Object mobileObj;
         void rotate(std::string turn);
         void move(std::string direction);
         void update();

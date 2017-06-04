@@ -4,8 +4,10 @@
 #define BASE_OBJ_H
 #include "Base_Obj.h"
 #endif // BASE_OBJ_H
+#include <list>
 
 #define tileSideLength 20
+#define numTerrainTypes 5
 
 class TerrainTile
 {
@@ -51,7 +53,7 @@ public:
         }
         else
         {
-            std::cout << "Unrecognized Terrain Tile " << typeName << " at (" << x << ", " << y << ")";
+            std::cout << "Unrecognized Terrain Tile " << typeName << " at (" << x << ", " << y << ")\n";
         }
     }
 };
@@ -62,24 +64,27 @@ class WorldMap
         sf::Sprite world;
         sf::Texture texture;
         std::map<std::pair<int, int>, TerrainTile *> tileMap;
-        int terrainTypesLength;
+        sf::Image mapImage;
+        std::string terrainTypes[numTerrainTypes];
+        sf::Color terrainColors[numTerrainTypes];
+        std::list<TerrainTile *> collisionsCollection;
+        std::map<std::string, sf::Color> terrainColorCollection;
 
-        std::string terrainTypes[5];
-        std::map<std::string, int> collisionsCollection;
-
-
-        WorldMap(std::string mapFile) : terrainTypes{"grass", "snow", "rock", "dirt", "water"}
+        WorldMap(std::string mapFile) : terrainTypes {"grass", "snow", "rock", "dirt", "water"}, terrainColors {sf::Color(103, 189, 2), sf::Color(255, 255, 255), sf::Color(152, 150, 144), sf::Color(139, 101, 0), sf::Color(50, 17, 222)}
         {
             texture.loadFromFile(mapFile);
             world.setTexture(texture);
-            InitializeTiles();
+            mapImage = texture.copyToImage();
 
-            terrainTypesLength = 5;
-            for (int g = 0; g < terrainTypesLength; g++)
-                collisionsCollection.insert(std::pair<std::string, int>(terrainTypes[g], 0));
+            for (int g = 0; g < numTerrainTypes; g++)
+            {
+                terrainColorCollection.insert(std::pair<std::string, sf::Color>(terrainTypes[g], terrainColors[g]));
+            }
+
+            InitializeTiles();
         }
 
         void InitializeTiles();
-        std::map<std::string, int> terrainCollision(double, double, int, sf::Sprite);
+        std::list<TerrainTile *> terrainCollision(double, double, int, sf::Sprite);
 };
 

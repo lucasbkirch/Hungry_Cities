@@ -2,22 +2,34 @@
 
 void WorldMap::InitializeTiles()
 {
-    int i = 0;
-    int j = 0;
+    unsigned int i = 0;
+    unsigned int j = 0;
     while (i < world.getGlobalBounds().width)
     {
         while (j < world.getGlobalBounds().height)
         {
-            if (i == 0 && j == 0)
+            sf::Color color = mapImage.getPixel(i, j);
+            std::string terrainTypeSelected;
+
+            bool match = false;
+
+            for (int h = 0; h < numTerrainTypes; h++)
             {
-                std::cout << "0, 0\n";
-                TerrainTile * tt = new TerrainTile(i, j, "grass");
-                sf::Texture texture;
-                texture.loadFromFile("Images/circle.png");
-                tt->tile.setTexture(texture);
+                if (color == terrainColorCollection[terrainTypes[h]])
+                {
+                    terrainTypeSelected = terrainTypes[h];
+                    match = true;
+                }
             }
-            else
-                tileMap.insert(std::pair<std::pair<int, int>, TerrainTile *>(std::make_pair(i, j), new TerrainTile(i, j, "grass"))); //TODO
+            if (!match)
+            {
+                unsigned int rVal = color.r;
+                unsigned int gVal = color.g;
+                unsigned int bVal = color.b;
+                std::cout << "Unrecognized color found (" << rVal << ", " << gVal << ", " << bVal << ")\n";
+            }
+
+            tileMap.insert(std::pair<std::pair<int, int>, TerrainTile *>(std::make_pair(i, j), new TerrainTile(i, j, terrainTypeSelected))); //TODO
             j += tileSideLength;
         }
         j = 0;
@@ -25,7 +37,7 @@ void WorldMap::InitializeTiles()
     }
 }
 
-std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int largestSide, sf::Sprite sprite)
+std::list<TerrainTile *> WorldMap::terrainCollision(double x, double y, int largestSide, sf::Sprite sprite)
 {
     int bottomX = (x - largestSide) / tileSideLength;
     bottomX *= tileSideLength;
@@ -37,10 +49,10 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
     int topY = (y + largestSide) / tileSideLength;
     topY *= tileSideLength;
 
-    //Set collisionsCollection entries to zero if it was used earlier
-    for (int f = 0; f < terrainTypesLength; f++)
+    //Empty collisionsCollection in case of earlier use
+    while (collisionsCollection.size() > 0)
     {
-        collisionsCollection[terrainTypes[f]] = 0;
+        collisionsCollection.pop_back();
     }
 
     for (int xCoord = bottomX; xCoord < topX; xCoord += tileSideLength)
@@ -51,16 +63,18 @@ std::map<std::string, int> WorldMap::terrainCollision(double x, double y, int la
             if (targetTile->tile.getGlobalBounds().intersects(sprite.getGlobalBounds()))
             {
                 bool found = false;
-                for (int v = 0; v < terrainTypesLength && !found; v++)
+                for (int v = 0; v < numTerrainTypes && !found; v++)
                 {
                     if (targetTile->type.compare(terrainTypes[v]))
                     {
-                        collisionsCollection[targetTile->type]++;
+                        collisionsCollection.push_back(targetTile);
                         found = true;
                     }
                 }
                 if (!found)
+                {
                     std::cout << "Terrain Type " << targetTile->type << " not recognized\n";
+                }
             }
         }
     return collisionsCollection;
