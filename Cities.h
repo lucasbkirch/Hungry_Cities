@@ -20,6 +20,7 @@ class City
 class MobileCity: public City, public Mobile_Object
 {
     public:
+        sf::Sprite wheelTracksSprite;
         MobileCity(std::string, int, std::string);
         void rotate(std::string turn);
         void move(std::string direction);

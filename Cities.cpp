@@ -16,6 +16,7 @@ MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName)
 {
     sprite.setTextureRect(sf::IntRect(0, 0, 50, 100));
+    wheelTracksSprite.setTextureRect(sf::IntRect(0, 80, 10, 20));
     sprite.setOrigin(25, 50);
 }
 
@@ -54,8 +55,13 @@ PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): Mo
 
 void MobileCity::update()
 {
+
     sprite.setPosition(x, y);
     sprite.setRotation(-angle);
+
+    wheelTracksSprite.setPosition(x, y); //TODO affect so it is at the end of the city
+    wheelTracksSprite.setRotation(-angle);
+
     if (angle > 360 || angle < -360)
     {
         angle = (int)angle % 360;

@@ -34,8 +34,12 @@ void HungryCitiesGame::run()
                 modifierSum += (*collisionsIter)->speedModifier;
                 if((*collisionsIter)->type.compare("grass") == 0)
                 {
-                    (*collisionsIter)->setTerrainType("dirt");
-                    worldMap.texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
+                    if ((*collisionsIter)->tile.getGlobalBounds().intersects(playerCity->wheelTracksSprite.getGlobalBounds()))
+                    {
+
+                        (*collisionsIter)->setTerrainType("dirt");
+                        worldMap.texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
+                    }
                 }
             }
             playerCity->moveSpd = playerCity->baseMoveSpd * (modifierSum / collisions.size());
