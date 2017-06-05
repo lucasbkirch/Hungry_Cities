@@ -37,16 +37,27 @@ void WorldMap::InitializeTiles()
     }
 }
 
-std::list<TerrainTile *> WorldMap::terrainCollision(double x, double y, int largestSide, sf::Sprite sprite)
+std::list<TerrainTile *> WorldMap::terrainCollision(sf::Sprite sprite)
 {
-    int bottomX = (x - largestSide) / tileSideLength;
+    //Find longest side
+    double longestSide;
+    if (sprite.getGlobalBounds().height > sprite.getGlobalBounds().width)
+    {
+        longestSide = sprite.getGlobalBounds().height;
+    }
+    else
+    {
+        longestSide = sprite.getGlobalBounds().width;
+    }
+
+    int bottomX = (sprite.getPosition().x - longestSide) / tileSideLength;
     bottomX *= tileSideLength;
-    int topX = (x + largestSide) / tileSideLength;
+    int topX = (sprite.getPosition().x + longestSide) / tileSideLength;
     topX *= tileSideLength;
 
-    int bottomY = (y - largestSide) / tileSideLength;
+    int bottomY = (sprite.getPosition().y - longestSide) / tileSideLength;
     bottomY *= tileSideLength;
-    int topY = (y + largestSide) / tileSideLength;
+    int topY = (sprite.getPosition().y + longestSide) / tileSideLength;
     topY *= tileSideLength;
 
     //Empty collisionsCollection in case of earlier use
@@ -78,5 +89,26 @@ std::list<TerrainTile *> WorldMap::terrainCollision(double x, double y, int larg
             }
         }
     return collisionsCollection;
+}
+
+double WorldMap::terrainSpeedCalculation(std::list<TerrainTile *> collisions, MobileCity * city)
+{
+        std::list<TerrainTile *>::iterator collisionsIter;
+        double modifierSum = 0;
+
+        sf::Image dirtImage;
+        dirtImage.loadFromFile("Images/dirt_terrain.png");
+
+        for (collisionsIter = collisions.begin(); collisionsIter != collisions.end(); collisionsIter++)
+        {
+            modifierSum += (*collisionsIter)->speedModifier;
+            if((*collisionsIter)->type.compare("grass") == 0 && (*collisionsIter)->tile.getGlobalBounds().intersects(city->wheelTracksSprite.getGlobalBounds()))
+            {
+                (*collisionsIter)->setTerrainType("dirt");
+                texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
+            }
+        }
+        return (modifierSum / collisions.size());
+
 }
 

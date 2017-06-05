@@ -22,27 +22,9 @@ void HungryCitiesGame::run()
 
         if (terrainCheckTimer >= WAIT_CYCLES)
         {
-            std::list<TerrainTile *> collisions = worldMap.terrainCollision(playerCity->x, playerCity->y, playerCity->sprite.getGlobalBounds().height, playerCity->sprite);
-            std::list<TerrainTile *>::iterator collisionsIter;
-            double modifierSum = 0;
-
-            sf::Image dirtImage;
-            dirtImage.loadFromFile("Images/dirt_terrain.png");
-
-            for (collisionsIter = collisions.begin(); collisionsIter != collisions.end(); collisionsIter++)
-            {
-                modifierSum += (*collisionsIter)->speedModifier;
-                if((*collisionsIter)->type.compare("grass") == 0)
-                {
-                    if ((*collisionsIter)->tile.getGlobalBounds().intersects(playerCity->wheelTracksSprite.getGlobalBounds()))
-                    {
-
-                        (*collisionsIter)->setTerrainType("dirt");
-                        worldMap.texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
-                    }
-                }
-            }
-            playerCity->moveSpd = playerCity->baseMoveSpd * (modifierSum / collisions.size());
+            std::list<TerrainTile *> collisions = worldMap.terrainCollision(playerCity->sprite);
+            //TODO Count number of each terrain type and add or subtract speed accordingly
+            playerCity->moveSpd = playerCity->baseMoveSpd * worldMap.terrainSpeedCalculation(collisions, (MobileCity *)playerCity);
             terrainCheckTimer = 0;
         }
         else
