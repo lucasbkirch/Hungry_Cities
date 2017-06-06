@@ -42,3 +42,13 @@ class StaticCity: public City, public StaticObject
         StaticCity(std::string, int, std::string);
 };
 
+class AICity: public MobileCity, public AIObject
+{
+    public:
+        void move();
+        AICity(double xPos, double yPos, unsigned int range) : MobileCity("AI CITY", 75, "Images/city.png"), AIObject(xPos, yPos, range)
+        {}
+        void update(double, double);
+
+};
+

@@ -33,8 +33,16 @@ class Mobile_Object
         }
 };
 
-class AI_Object
+class AIObject
 {
+    public:
+        sf::Sprite fovSprite;
+        AIObject(double x, double y, unsigned int range)
+        {
+            fovSprite.setPosition(x, y);
+            fovSprite.setTextureRect(sf::IntRect(0, 0, range, range));
+            fovSprite.setOrigin(range/2, range/2);
+        }
 
-
+        void update(double, double);
 };

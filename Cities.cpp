@@ -83,3 +83,9 @@ void PlayerCity::update()
 {
     MobileCity::update();
 }
+
+void AICity::update(double x, double y)
+{
+    fovSprite.setPosition(x, y);
+    MobileCity::update();
+}
