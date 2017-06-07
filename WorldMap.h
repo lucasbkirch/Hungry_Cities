@@ -47,8 +47,8 @@ class WorldMap
         sf::Texture texture;
         sf::Image mapImage;
 
-        sf::Color terrainColors[numTerrainTypes];
         std::string terrainTypes[numTerrainTypes];
+        sf::Color terrainColors[numTerrainTypes];
 
         std::map<std::pair<int, int>, TerrainTile *> tileMap;
         std::map<std::string, sf::Color> terrainColorCollection;
