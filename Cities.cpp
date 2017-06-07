@@ -11,6 +11,17 @@ City::City(std::string cityName, int sz, std::string txturName)
         sprite.setTexture(texture);
 }
 
+StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
+: City(cityName, sz, txturName)
+{
+    x = rand() % 5000;
+    y = rand() % 5000;
+    std::cout << "Placed at (" << x << ", " << y << ")\n";
+    sprite.setPosition(x, y);
+    sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+    sprite.setOrigin(25, 50);
+}
+
 MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName)
 {
@@ -50,6 +61,22 @@ double MobileCity::calculateSpeedMod(double terrainSpeedMod, std::string terrain
     return terrainSpeedMod;
 }
 
+std::list<TerrainTile *> * MobileCity::update(std::list<TerrainTile *> * collisions)
+{
+    sprite.setPosition(x, y);
+    sprite.setRotation(-angle);
+
+    wheelTracksSprite.setPosition(x, y); //TODO affect so it is at the end of the city
+    wheelTracksSprite.setRotation(-angle);
+
+    if (angle > 360 || angle < -360)
+    {
+        angle = (int)angle % 360;
+    }
+
+    return terrainSpeedCalculation(collisions);
+}
+
 std::list<TerrainTile *> * MobileCity::terrainSpeedCalculation(std::list<TerrainTile *> * collisions)
 {
         std::list<TerrainTile *> * grassTiles = new std::list<TerrainTile *>();
@@ -82,45 +109,6 @@ PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): Mo
     sprite.setPosition(x, y);
 }
 
-std::list<TerrainTile *> * MobileCity::update(std::list<TerrainTile *> * collisions)
-{
-
-    sprite.setPosition(x, y);
-    sprite.setRotation(-angle);
-
-    wheelTracksSprite.setPosition(x, y); //TODO affect so it is at the end of the city
-    wheelTracksSprite.setRotation(-angle);
-
-    if (angle > 360 || angle < -360)
-    {
-        angle = (int)angle % 360;
-    }
-
-    return terrainSpeedCalculation(collisions);
-}
-
-StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
-: City(cityName, sz, txturName)
-{
-    x = rand() % 5000;
-    y = rand() % 5000;
-    std::cout << "Placed at (" << x << ", " << y << ")\n";
-    sprite.setPosition(x, y);
-    sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
-    sprite.setOrigin(25, 50);
-}
-
-std::list<TerrainTile *> * PlayerCity::update(std::list<TerrainTile *> * collisions)
-{
-    return MobileCity::update(collisions);
-}
-
-std::list<TerrainTile *> * AICity::update(double x, double y, std::list<TerrainTile *> * collisions)
-{
-    fovSprite.setPosition(x, y);
-    return MobileCity::update(collisions);
-}
-
 void PlayerCity::keyPressManagement()
 {
     bool up_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
@@ -146,8 +134,21 @@ void PlayerCity::keyPressManagement()
         rotate("right");
     }
 }
+
+std::list<TerrainTile *> * PlayerCity::update(std::list<TerrainTile *> * collisions)
+{
+    return MobileCity::update(collisions);
+}
+
 std::list<TerrainTile *> * PlayerCity::execute(std::list<TerrainTile *> * collisions)
 {
     keyPressManagement();
     return update(collisions);
 }
+
+std::list<TerrainTile *> * AICity::update(double x, double y, std::list<TerrainTile *> * collisions)
+{
+    fovSprite.setPosition(x, y);
+    return MobileCity::update(collisions);
+}
+

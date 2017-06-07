@@ -41,6 +41,14 @@ class City
 
 };
 
+class StaticCity: public City, public StaticObject
+{
+    private:
+    public:
+        //Constructors
+        StaticCity(std::string, int, std::string);
+};
+
 class MobileCity: public City, public Mobile_Object
 {
     private:
@@ -52,8 +60,8 @@ class MobileCity: public City, public Mobile_Object
         MobileCity(std::string, int, std::string);
 
         //Methods
-        void rotate(std::string turn);
         void move(std::string direction);
+        void rotate(std::string turn);
 
         double calculateSpeedMod(double, std::string);
 
@@ -72,15 +80,6 @@ class PlayerCity: public MobileCity
         void keyPressManagement();
         std::list<TerrainTile *> * update(std::list<TerrainTile *> *);
         std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
-};
-
-
-class StaticCity: public City, public StaticObject
-{
-    private:
-    public:
-        //Constructors
-        StaticCity(std::string, int, std::string);
 };
 
 class AICity: public MobileCity, public AIObject
