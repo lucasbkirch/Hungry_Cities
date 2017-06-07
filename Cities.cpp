@@ -19,8 +19,8 @@ City::City(std::string cityName, int sz, std::string txturName)
 StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName)
 {
-    x = rand() % 4000;
-    y = rand() % 4000;
+    x = rand() % screenSizeSpawnArea + 250;
+    y = rand() % screenSizeSpawnArea + 250;
     std::cout << "Placed at (" << x << ", " << y << ")\n";
     sprite.setPosition(x, y);
     sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));

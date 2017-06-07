@@ -15,9 +15,9 @@
 
 #include <cmath>
 #include <iostream>
-#define PI 3.14159265
 #include <time.h>
 
+#define PI 3.14159265
 class City
 {
     private:

@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#define screenSizeSpawnArea 4500
+#define screenSize 5000
 
 class StaticObject
 {
@@ -15,12 +17,22 @@ class Mobile_Object
         double baseMoveSpd, moveSpd, angle, turn_rate, x, y;
 
         //Constructors
+        Mobile_Object(int x_, int y_)
+        {
+            x = x_;
+            y = y_;
+            angle = 0;
+            turn_rate = 0.1;
+            baseMoveSpd = 0.25;
+            moveSpd = baseMoveSpd;
+        }
+
         Mobile_Object()
         {
-            x = 2500; //TODO
-            y = 2500; // TODO get actual map size
+            x = rand() % screenSizeSpawnArea + 250;
+            y = rand() % screenSizeSpawnArea + 250;
             angle = 0;
-            turn_rate = 0.05;
+            turn_rate = 0.1;
             baseMoveSpd = 0.25;
             moveSpd = baseMoveSpd;
         }

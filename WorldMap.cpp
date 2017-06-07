@@ -85,9 +85,9 @@ void WorldMap::CityGrassAffect(std::list<TerrainTile *> * grassCollisions)
     {
         (*grassIter)->setTerrainType("dirt");
         texture.update(dirtImage, (*grassIter)->x, (*grassIter)->y);
+        delete (*grassIter);
     }
 }
-
 
 std::list<TerrainTile *> * WorldMap::terrainCollision(sf::Sprite sprite)
 {
