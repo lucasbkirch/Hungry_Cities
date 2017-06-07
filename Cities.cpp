@@ -27,6 +27,11 @@ StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
     sprite.setOrigin(25, 50);
 }
 
+std::list<TerrainTile *> * StaticCity::execute(std::list<TerrainTile *> *)
+{
+    return NULL;
+}
+
 //StaticCity END ----------------------------------------------------------
 //MobileCity BEGIN --------------------------------------------------------
 
