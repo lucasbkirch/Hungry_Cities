@@ -12,12 +12,12 @@
 #endif // WORLDMAP_H
 
 #include <list>
-
 #include <cmath>
 #include <iostream>
 #include <time.h>
 
 #define PI 3.14159265
+
 class City
 {
     private:

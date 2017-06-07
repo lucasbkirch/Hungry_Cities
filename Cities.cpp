@@ -55,6 +55,16 @@ void MobileCity::move(std::string direction)
 
     y += (dir * std::cos(radians) * moveSpd);
     x += (dir * std::sin(radians) * moveSpd);
+
+    if (x > screenSize)
+        x = screenSize;
+    else if (x < 0)
+        x = 0;
+
+    if (y > screenSize)
+        y = screenSize;
+    else if (y < 0)
+        y = 0;
 }
 
 void MobileCity::rotate(std::string turn)
