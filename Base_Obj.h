@@ -4,14 +4,17 @@
 class StaticObject
 {
     public:
+        //Members
         int x, y;
 };
 
 class Mobile_Object
 {
     public:
+        //Member Variables
         double baseMoveSpd, moveSpd, angle, turn_rate, x, y;
 
+        //Constructors
         Mobile_Object()
         {
             x = 2500; //TODO
@@ -35,7 +38,10 @@ class Mobile_Object
 class AIObject
 {
     public:
+        //Member Variables
         sf::Sprite fovSprite;
+
+        //Constructors
         AIObject(double x, double y, unsigned int range)
         {
             fovSprite.setPosition(x, y);
@@ -43,5 +49,6 @@ class AIObject
             fovSprite.setOrigin(range/2, range/2);
         }
 
+        //Methods
         void update(double, double);
 };

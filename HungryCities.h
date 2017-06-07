@@ -6,28 +6,32 @@
 #include "Cities.h"
 #endif // CITIES_H
 
-
 #define WAIT_CYCLES 20
 
 class HungryCitiesGame
 {
+    private:
     public:
+        //Variable Members
         sf::RenderWindow window;
         WorldMap worldMap;
+
         std::map<std::string, Mobile_Object *> mobileObjDict;
         std::map<std::string, City *> cityDict;
 
+        //Constructors
         HungryCitiesGame(): window(sf::VideoMode(640, 640), "Hungry City Chronicles"), worldMap("Images/map_1.png")
         {
             sf::Image Icon;
             Icon.loadFromFile("Images/wagon_wheel_icon.png");
             window.setIcon(32, 32, Icon.getPixelsPtr());
         }
-        void drawAll();
-        void cityCollisionCheck();
-        void eventManagement();
-        //void keyPressManagement(PlayerCity*);
+
+        //Methods
         void run();
-        PlayerCity * cityInitialization(std::string, std::string);
+        void drawAll();
         void cleanUp();
+        void eventManagement();
+        void cityCollisionCheck();
+        PlayerCity * cityInitialization(std::string, std::string);
 };

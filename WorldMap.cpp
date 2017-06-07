@@ -1,5 +1,35 @@
 #include "WorldMap.h"
 
+void TerrainTile::setTerrainType(std::string typeName)
+{
+    type = typeName;
+
+    if (typeName.compare("grass") == 0)
+    {
+        speedModifier = 0.9;
+    }
+    else if (typeName.compare("dirt") == 0)
+    {
+        speedModifier = 1.0;
+    }
+    else if (typeName.compare("snow") == 0)
+    {
+        speedModifier = 0.75;
+    }
+    else if (typeName.compare("water") == 0)
+    {
+        speedModifier = 0;
+    }
+    else if (typeName.compare("rock") == 0)
+    {
+        speedModifier = 0.6;
+    }
+    else
+    {
+        std::cout << "Unrecognized Terrain Tile " << typeName << " at (" << x << ", " << y << ")\n";
+    }
+}
+
 void WorldMap::InitializeTiles()
 {
     unsigned int i = 0;
