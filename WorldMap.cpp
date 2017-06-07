@@ -1,5 +1,7 @@
 #include "WorldMap.h"
 
+//TERRAINTILE BEGIN -----------------------------------------------
+
 void TerrainTile::setTerrainType(std::string typeName)
 {
     type = typeName;
@@ -29,6 +31,9 @@ void TerrainTile::setTerrainType(std::string typeName)
         std::cout << "Unrecognized Terrain Tile " << typeName << " at (" << x << ", " << y << ")\n";
     }
 }
+
+//TERRAINTILE END -------------------------------------------------
+//WORLDMAP BEGIN --------------------------------------------------
 
 void WorldMap::InitializeTiles()
 {
@@ -66,6 +71,20 @@ void WorldMap::InitializeTiles()
         i += tileSideLength;
     }
 }
+
+void WorldMap::CityGrassAffect(std::list<TerrainTile *> * grassCollisions)
+{
+    std::list<TerrainTile *>::iterator grassIter;
+
+    sf::Image dirtImage;
+    dirtImage.loadFromFile("Images/dirt_terrain.png");
+    for (grassIter = grassCollisions->begin(); grassIter != grassCollisions->end(); grassIter++)
+    {
+        (*grassIter)->setTerrainType("dirt");
+        texture.update(dirtImage, (*grassIter)->x, (*grassIter)->y);
+    }
+}
+
 
 std::list<TerrainTile *> * WorldMap::terrainCollision(sf::Sprite sprite)
 {
@@ -121,16 +140,4 @@ std::list<TerrainTile *> * WorldMap::terrainCollision(sf::Sprite sprite)
     return &collisionsCollection;
 }
 
-void WorldMap::CityGrassAffect(std::list<TerrainTile *> * grassCollisions)
-{
-    std::list<TerrainTile *>::iterator grassIter;
-
-    sf::Image dirtImage;
-    dirtImage.loadFromFile("Images/dirt_terrain.png");
-    for (grassIter = grassCollisions->begin(); grassIter != grassCollisions->end(); grassIter++)
-    {
-        (*grassIter)->setTerrainType("dirt");
-        texture.update(dirtImage, (*grassIter)->x, (*grassIter)->y);
-    }
-}
-
+//WORLDMAP END ----------------------------------------------------
