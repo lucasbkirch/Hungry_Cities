@@ -27,20 +27,39 @@ void HungryCitiesGame::run()
 
         cityCollisionCheck();
 
-        if (terrainCheckTimer >= WAIT_CYCLES)
-        {
-
-            //TODO Count number of each terrain type and add or subtract speed accordingly
-            //playerCity->moveSpd = playerCity->baseMoveSpd * worldMap.terrainSpeedCalculation(collisions, (MobileCity *)playerCity);
-            terrainCheckTimer = 0;
-        }
-        else
-            terrainCheckTimer++;
         drawAll();
         window.setView(view);
     }
 
     cleanUp();
+}
+
+void HungryCitiesGame::drawAll()
+{
+    std::map<std::string, City *>::iterator cityIter;
+    window.clear();
+
+    //Draw the map, cities and other objects in the world
+    window.draw(worldMap.world);
+
+    for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+    {
+        PlayerCity* playerType = dynamic_cast<PlayerCity*>(cityIter->second);
+
+        if (playerType == NULL) //Non-playercity
+            window.draw((cityIter->second)->sprite);
+        else
+        {
+            //an extra sprite was made for playerCity because a sprite is used for Collisions AND for drawing.
+            //However, drawing for a player city is NOT attached to its curreny (x, y) as it is always in the center of the screen
+            //BUT this conflicts with the drawing. Therefore, I made an additional sprite that is drawn for the playercity
+            window.draw(playerType->sprite);
+            //How to draw the playerCity sprite in the middle of the  screen without also affecting the location of the player
+            //Cities Sprite? Make another sprite? One for drawing one for collision?
+        }
+    }
+    window.display();
+
 }
 
 void HungryCitiesGame::cleanUp()
@@ -54,26 +73,6 @@ void HungryCitiesGame::cleanUp()
     }
 }
 
-PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, std::string staticCityImage)
-{
-    //Creating and adding all the city objects
-    PlayerCity * playerCity = new PlayerCity("London",     100, mobileCityImage);
-    StaticCity * targetCity1 = new StaticCity("Paris",     50,  staticCityImage);
-    StaticCity * targetCity2 = new StaticCity("Berlin",    50,  staticCityImage);
-    StaticCity * targetCity3 = new StaticCity("Kalingrad", 50,  staticCityImage);
-    StaticCity * targetCity4 = new StaticCity("Amsterdam", 50,  staticCityImage);
-
-    //Adding to cityDict all mobile and static cities
-    cityDict.insert(std::pair<std::string, City *>(playerCity->name, playerCity));
-
-    cityDict.insert(std::pair<std::string, City *>(targetCity1->name, targetCity1));
-    cityDict.insert(std::pair<std::string, City *>(targetCity2->name, targetCity2));
-    cityDict.insert(std::pair<std::string, City *>(targetCity3->name, targetCity3));
-    cityDict.insert(std::pair<std::string, City *>(targetCity4->name, targetCity4));
-
-    return playerCity;
-}
-
 void HungryCitiesGame::eventManagement()
 {
     sf::Event event;
@@ -83,8 +82,6 @@ void HungryCitiesGame::eventManagement()
             window.close();
     }
 }
-
-
 
 void HungryCitiesGame::cityCollisionCheck()
 {
@@ -121,53 +118,22 @@ void HungryCitiesGame::cityCollisionCheck()
     }
 }
 
-void HungryCitiesGame::drawAll()
+PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, std::string staticCityImage)
 {
-    std::map<std::string, City *>::iterator cityIter;
-    window.clear();
+    //Creating and adding all the city objects
+    PlayerCity * playerCity = new PlayerCity("London",     100, mobileCityImage);
+    StaticCity * targetCity1 = new StaticCity("Paris",     50,  staticCityImage);
+    StaticCity * targetCity2 = new StaticCity("Berlin",    50,  staticCityImage);
+    StaticCity * targetCity3 = new StaticCity("Kalingrad", 50,  staticCityImage);
+    StaticCity * targetCity4 = new StaticCity("Amsterdam", 50,  staticCityImage);
 
-    //Draw the map, cities and other objects in the world
-    window.draw(worldMap.world);
+    //Adding to cityDict all mobile and static cities
+    cityDict.insert(std::pair<std::string, City *>(playerCity->name, playerCity));
 
-    for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
-    {
-        PlayerCity* playerType = dynamic_cast<PlayerCity*>(cityIter->second);
+    cityDict.insert(std::pair<std::string, City *>(targetCity1->name, targetCity1));
+    cityDict.insert(std::pair<std::string, City *>(targetCity2->name, targetCity2));
+    cityDict.insert(std::pair<std::string, City *>(targetCity3->name, targetCity3));
+    cityDict.insert(std::pair<std::string, City *>(targetCity4->name, targetCity4));
 
-        if (playerType == NULL) //Non-playercity
-            window.draw((cityIter->second)->sprite);
-        else
-        {
-            //an extra sprite was made for playerCity because a sprite is used for Collisions AND for drawing.
-            //However, drawing for a player city is NOT attached to its curreny (x, y) as it is always in the center of the screen
-            //BUT this conflicts with the drawing. Therefore, I made an additional sprite that is drawn for the playercity
-            window.draw(playerType->sprite);
-            //How to draw the playerCity sprite in the middle of the  screen without also affecting the location of the player
-            //Cities Sprite? Make another sprite? One for drawing one for collision?
-        }
-    }
-    window.display();
-
+    return playerCity;
 }
-/*
-void HungryCitiesGame::updateAll()
-{
-    std::map<std::string, City *>::iterator cityIter;
-
-        //Update all cities
-    for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
-    {
-
-        PlayerCity* player_type = dynamic_cast<PlayerCity*>(cityIter->second);
-
-        if (player_type == NULL) //if Type StaticCity
-        {
-            //StaticCity* static_type = dynamic_cast<StaticCity*>(cityIter->second);
-            // No need to update --- //static_type->update();
-        }
-        else //playerCity: Since there is only every 1 player city, there is no need to cast the currently selected cityIter->second to PlayerCity type and update that.
-        {
-            player_type->update();
-        }
-    }
-//    worldMap.update(playerCity->x, playerCity->y);
-}*/

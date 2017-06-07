@@ -6,7 +6,7 @@
 #include "Cities.h"
 #endif // CITIES_H
 
-#define WAIT_CYCLES 20
+#define windowSize 640
 
 class HungryCitiesGame
 {
@@ -20,7 +20,7 @@ class HungryCitiesGame
         std::map<std::string, City *> cityDict;
 
         //Constructors
-        HungryCitiesGame(): window(sf::VideoMode(640, 640), "Hungry City Chronicles"), worldMap("Images/map_1.png")
+        HungryCitiesGame(): window(sf::VideoMode(windowSize, windowSize), "Hungry City Chronicles"), worldMap("Images/map_1.png")
         {
             sf::Image Icon;
             Icon.loadFromFile("Images/wagon_wheel_icon.png");
