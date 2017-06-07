@@ -6,6 +6,15 @@
 #include "Base_Obj.h"
 #endif // BASE_OBJ_H
 
+#ifndef WORLDMAP_H
+#define WORLDMAP_H
+#include "WorldMap.h"
+#endif // WORLDMAP_H
+
+#include <list>
+
+//class TerrainTile;
+
 class City
 {
     public:
@@ -15,6 +24,12 @@ class City
         std::string name;
         City(std::string, int, std::string);
         virtual ~City(){} //TODO -- https://stackoverflow.com/questions/15114093/getting-source-type-is-not-polymorphic-when-trying-to-use-dynamic-cast
+        virtual std::list<TerrainTile *> * execute(std::list<TerrainTile *> *)
+        {
+            std::cout << "execute() is not implemented for this City\n";
+            return NULL;
+        };
+
 };
 
 class MobileCity: public City, public Mobile_Object
@@ -24,7 +39,9 @@ class MobileCity: public City, public Mobile_Object
         MobileCity(std::string, int, std::string);
         void rotate(std::string turn);
         void move(std::string direction);
-        void update();
+        std::list<TerrainTile *> * update(std::list<TerrainTile *> *);
+        double calculateSpeedMod(double, std::string);
+        std::list<TerrainTile *> * terrainSpeedCalculation(std::list<TerrainTile *>*);
 };
 
 class PlayerCity: public MobileCity
@@ -32,7 +49,9 @@ class PlayerCity: public MobileCity
 
     public:
         PlayerCity(std::string, int, std::string);
-        void update();
+        std::list<TerrainTile *> * update(std::list<TerrainTile *> *);
+        void keyPressManagement();
+        std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
 };
 
 
@@ -48,7 +67,7 @@ class AICity: public MobileCity, public AIObject
         void move();
         AICity(double xPos, double yPos, unsigned int range) : MobileCity("AI CITY", 75, "Images/city.png"), AIObject(xPos, yPos, range)
         {}
-        void update(double, double);
+        std::list<TerrainTile *> * update(double, double, std::list<TerrainTile *> *);
 
 };
 

@@ -6,10 +6,7 @@
 #include "Cities.h"
 #endif // CITIES_H
 
-#ifndef WORLDMAP_H
-#define WORLDMAP_H
-#include "WorldMap.h"
-#endif // WORLDMAP_H
+
 #define WAIT_CYCLES 20
 
 class HungryCitiesGame
@@ -26,12 +23,10 @@ class HungryCitiesGame
             Icon.loadFromFile("Images/wagon_wheel_icon.png");
             window.setIcon(32, 32, Icon.getPixelsPtr());
         }
-
-        void updateAll();
         void drawAll();
         void cityCollisionCheck();
         void eventManagement();
-        void keyPressManagement(PlayerCity*);
+        //void keyPressManagement(PlayerCity*);
         void run();
         PlayerCity * cityInitialization(std::string, std::string);
         void cleanUp();

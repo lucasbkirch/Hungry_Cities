@@ -37,7 +37,7 @@ void WorldMap::InitializeTiles()
     }
 }
 
-std::list<TerrainTile *> WorldMap::terrainCollision(sf::Sprite sprite)
+std::list<TerrainTile *> * WorldMap::terrainCollision(sf::Sprite sprite)
 {
     //Find longest side
     double longestSide;
@@ -88,27 +88,19 @@ std::list<TerrainTile *> WorldMap::terrainCollision(sf::Sprite sprite)
                 }
             }
         }
-    return collisionsCollection;
+    return &collisionsCollection;
 }
 
-double WorldMap::terrainSpeedCalculation(std::list<TerrainTile *> collisions, MobileCity * city)
+void WorldMap::CityGrassAffect(std::list<TerrainTile *> * grassCollisions)
 {
-        std::list<TerrainTile *>::iterator collisionsIter;
-        double modifierSum = 0;
+    std::list<TerrainTile *>::iterator grassIter;
 
-        sf::Image dirtImage;
-        dirtImage.loadFromFile("Images/dirt_terrain.png");
-
-        for (collisionsIter = collisions.begin(); collisionsIter != collisions.end(); collisionsIter++)
-        {
-            modifierSum += (*collisionsIter)->speedModifier;
-            if((*collisionsIter)->type.compare("grass") == 0 && (*collisionsIter)->tile.getGlobalBounds().intersects(city->wheelTracksSprite.getGlobalBounds()))
-            {
-                (*collisionsIter)->setTerrainType("dirt");
-                texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
-            }
-        }
-        return (modifierSum / collisions.size());
-
+    sf::Image dirtImage;
+    dirtImage.loadFromFile("Images/dirt_terrain.png");
+    for (grassIter = grassCollisions->begin(); grassIter != grassCollisions->end(); grassIter++)
+    {
+        (*grassIter)->setTerrainType("dirt");
+        texture.update(dirtImage, (*grassIter)->x, (*grassIter)->y);
+    }
 }
 

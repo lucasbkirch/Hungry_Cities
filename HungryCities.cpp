@@ -17,20 +17,25 @@ void HungryCitiesGame::run()
         //allows view to center on the playerCity
         view.reset(sf::FloatRect(playerCity->x - (360 - 25), playerCity->y - (360 - 50), 640, 640));
         eventManagement();
-        keyPressManagement(playerCity);
+
+        std::list<TerrainTile *> * collisions = worldMap.terrainCollision(playerCity->sprite);
+
+        //Replace with loop that calls execute for all cities
+        std::list<TerrainTile *> * grassCollisions = playerCity->execute(collisions);
+
+        worldMap.CityGrassAffect(grassCollisions);
+
         cityCollisionCheck();
 
         if (terrainCheckTimer >= WAIT_CYCLES)
         {
-            std::list<TerrainTile *> collisions = worldMap.terrainCollision(playerCity->sprite);
+
             //TODO Count number of each terrain type and add or subtract speed accordingly
-            playerCity->moveSpd = playerCity->baseMoveSpd * worldMap.terrainSpeedCalculation(collisions, (MobileCity *)playerCity);
+            //playerCity->moveSpd = playerCity->baseMoveSpd * worldMap.terrainSpeedCalculation(collisions, (MobileCity *)playerCity);
             terrainCheckTimer = 0;
         }
         else
             terrainCheckTimer++;
-
-        updateAll();
         drawAll();
         window.setView(view);
     }
@@ -79,31 +84,7 @@ void HungryCitiesGame::eventManagement()
     }
 }
 
-void HungryCitiesGame::keyPressManagement(PlayerCity * playerCity)
-{
-    bool up_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-    bool down_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-    bool left_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-    bool right_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 
-    if (up_pressed)
-    {
-        playerCity->move("forward");
-    }
-    else if (down_pressed)
-    {
-        playerCity->move("backward");
-    }
-
-    if (left_pressed && (up_pressed ^ down_pressed))
-    {
-        playerCity->rotate("left");
-    }
-    else if (right_pressed && (up_pressed ^ down_pressed))
-    {
-        playerCity->rotate("right");
-    }
-}
 
 void HungryCitiesGame::cityCollisionCheck()
 {
@@ -167,7 +148,7 @@ void HungryCitiesGame::drawAll()
     window.display();
 
 }
-
+/*
 void HungryCitiesGame::updateAll()
 {
     std::map<std::string, City *>::iterator cityIter;
@@ -189,4 +170,4 @@ void HungryCitiesGame::updateAll()
         }
     }
 //    worldMap.update(playerCity->x, playerCity->y);
-}
+}*/

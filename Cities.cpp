@@ -1,4 +1,7 @@
+#ifndef CITIES_H
+#define CITIES_H
 #include "Cities.h"
+#endif // CITIES_H
 #include <cmath>
 #include <iostream>
 #define PI 3.14159265
@@ -46,6 +49,36 @@ void MobileCity::rotate(std::string turn)
     }
 }
 
+double MobileCity::calculateSpeedMod(double terrainSpeedMod, std::string terrainType)
+{
+    return terrainSpeedMod;
+}
+
+std::list<TerrainTile *> * MobileCity::terrainSpeedCalculation(std::list<TerrainTile *> * collisions)
+{
+        std::list<TerrainTile *> * grassTiles = new std::list<TerrainTile *>();
+        std::list<TerrainTile *>::iterator collisionsIter;
+        double modifierSum = 0;
+
+        //sf::Image dirtImage;
+        //dirtImage.loadFromFile("Images/dirt_terrain.png");
+
+        for (collisionsIter = collisions->begin(); collisionsIter != collisions->end(); collisionsIter++)
+        {
+            modifierSum += calculateSpeedMod((*collisionsIter)->speedModifier, (*collisionsIter)->type);
+            if((*collisionsIter)->type.compare("grass") == 0 && (*collisionsIter)->tile.getGlobalBounds().intersects(wheelTracksSprite.getGlobalBounds()))
+            {
+
+                grassTiles->push_back((*collisionsIter));
+
+                //(*collisionsIter)->setTerrainType("dirt");
+                //texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
+            }
+        }
+        moveSpd = (modifierSum / collisions->size());
+        return grassTiles;
+}
+
 PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): MobileCity(cityName, sz, txtureName)
 {
     x = 2500;
@@ -53,7 +86,7 @@ PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): Mo
     sprite.setPosition(x, y);
 }
 
-void MobileCity::update()
+std::list<TerrainTile *> * MobileCity::update(std::list<TerrainTile *> * collisions)
 {
 
     sprite.setPosition(x, y);
@@ -66,6 +99,8 @@ void MobileCity::update()
     {
         angle = (int)angle % 360;
     }
+
+    return terrainSpeedCalculation(collisions);
 }
 
 StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
@@ -79,13 +114,44 @@ StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
     sprite.setOrigin(25, 50);
 }
 
-void PlayerCity::update()
+std::list<TerrainTile *> * PlayerCity::update(std::list<TerrainTile *> * collisions)
 {
-    MobileCity::update();
+    return MobileCity::update(collisions);
 }
 
-void AICity::update(double x, double y)
+std::list<TerrainTile *> * AICity::update(double x, double y, std::list<TerrainTile *> * collisions)
 {
     fovSprite.setPosition(x, y);
-    MobileCity::update();
+    return MobileCity::update(collisions);
+}
+
+void PlayerCity::keyPressManagement()
+{
+    bool up_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+    bool down_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+    bool left_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    bool right_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+    if (up_pressed)
+    {
+        move("forward");
+    }
+    else if (down_pressed)
+    {
+        move("backward");
+    }
+
+    if (left_pressed && (up_pressed ^ down_pressed))
+    {
+        rotate("left");
+    }
+    else if (right_pressed && (up_pressed ^ down_pressed))
+    {
+        rotate("right");
+    }
+}
+std::list<TerrainTile *> * PlayerCity::execute(std::list<TerrainTile *> * collisions)
+{
+    keyPressManagement();
+    return update(collisions);
 }

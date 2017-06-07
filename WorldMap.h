@@ -6,11 +6,6 @@
 #endif // BASE_OBJ_H
 #include <list>
 
-#ifndef CITIES_H
-#define CITIES_H
-#include "Cities.h"
-#endif // CITIES_H
-
 #define tileSideLength 20
 #define numTerrainTypes 5
 
@@ -91,7 +86,8 @@ class WorldMap
         }
 
         void InitializeTiles();
-        std::list<TerrainTile *> terrainCollision(sf::Sprite);
-        double terrainSpeedCalculation(std::list<TerrainTile *> collisions, MobileCity * city);
+        std::list<TerrainTile *> * terrainCollision(sf::Sprite);
+        void CityGrassAffect(std::list<TerrainTile *> *);
+        //double terrainSpeedCalculation(std::list<TerrainTile *> collisions, MobileCity * city);
 };
 
