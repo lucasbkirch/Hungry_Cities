@@ -57,6 +57,7 @@ class StaticCity: public City, public StaticObject
     public:
         //Constructors
         StaticCity(std::string, int, std::string);
+        std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
 };
 
 class MobileCity: public City, public Mobile_Object
