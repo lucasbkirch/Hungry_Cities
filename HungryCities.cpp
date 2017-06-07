@@ -27,12 +27,10 @@ void HungryCitiesGame::run()
         std::map<std::string, City *>::iterator cityIter;
         for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
         {
-            std::list<TerrainTile *> * collisions = worldMap.terrainCollision(cityIter->second->sprite);
-            std::list<TerrainTile *> * grassCollisions = cityIter->second->execute(collisions);
-            worldMap.CityGrassAffect(grassCollisions);
-
-            //worldMap.CityGrassAffect(cityIter->second->execute(worldMap.terrainCollision(cityIter->second->sprite)));
-            //cityIter->second->execute(collisions);
+            //First, it checks the terrain collisions with the city sprite -> returns terrainTile collection
+            //Second, that city calls execute passing in the collection of terrain collisions -> returning a collection of 'grass' terrain tiles
+            //Third, grass terrain tiles are switched to dirt and the worldMap image is updated to reflect this
+            worldMap.CityGrassAffect(cityIter->second->execute(worldMap.terrainCollision(cityIter->second->sprite)));
         }
 
         cityCollisionCheck();
