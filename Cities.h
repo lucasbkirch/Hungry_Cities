@@ -13,6 +13,11 @@
 
 #include <list>
 
+#include <cmath>
+#include <iostream>
+#define PI 3.14159265
+#include <time.h>
+
 //class TerrainTile;
 
 class City

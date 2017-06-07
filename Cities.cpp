@@ -2,10 +2,6 @@
 #define CITIES_H
 #include "Cities.h"
 #endif // CITIES_H
-#include <cmath>
-#include <iostream>
-#define PI 3.14159265
-#include <time.h>
 
 City::City(std::string cityName, int sz, std::string txturName)
 {
