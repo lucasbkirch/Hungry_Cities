@@ -48,7 +48,6 @@ class City
             else
                 return ""; //empty string
         };
-
 };
 
 class StaticCity: public City, public StaticObject

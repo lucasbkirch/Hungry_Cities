@@ -26,7 +26,6 @@ void HungryCitiesGame::run()
         }
 
         cityCollisionCheck();
-
         drawAll();
         window.setView(view);
     }
@@ -44,19 +43,7 @@ void HungryCitiesGame::drawAll()
 
     for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
     {
-        PlayerCity* playerType = dynamic_cast<PlayerCity*>(cityIter->second);
-
-        if (playerType == NULL) //Non-playercity
-            window.draw((cityIter->second)->sprite);
-        else
-        {
-            //an extra sprite was made for playerCity because a sprite is used for Collisions AND for drawing.
-            //However, drawing for a player city is NOT attached to its curreny (x, y) as it is always in the center of the screen
-            //BUT this conflicts with the drawing. Therefore, I made an additional sprite that is drawn for the playercity
-            window.draw(playerType->sprite);
-            //How to draw the playerCity sprite in the middle of the  screen without also affecting the location of the player
-            //Cities Sprite? Make another sprite? One for drawing one for collision?
-        }
+        window.draw((cityIter->second)->sprite);
     }
     window.display();
 }
@@ -102,7 +89,6 @@ void HungryCitiesGame::cityCollisionCheck()
         {
             if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
             {
-                std::cout << "Collision between the cities " << currCity.name << currCity.size_ << " and " << cityIter->first << (cityIter->second)->size_  << "\n";
                 std::string destroyedCity = currCity.collideWith(cityIter->second);
                 if (!destroyedCity.empty())
                 {
