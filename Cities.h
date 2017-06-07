@@ -41,6 +41,7 @@ class City
 
         virtual std::string collideWith(City * collisionCity)
         {
+            std::cout << collisionCity->name << ": " << collisionCity->size_ << " vs. " << name << ": " << size_ << "\n";
             if (collisionCity->size_ > size_)
                 return name;
             else if (collisionCity->size_ < size_)
@@ -96,14 +97,33 @@ class AICity: public MobileCity, public AIObject
 {
     private:
     public:
+        //Member Variables
+        int currState;
+        std::pair<int, int> currTargetPoint;
 
         //Constructors
-        AICity(double xPos, double yPos, unsigned int range) : MobileCity("AI CITY", 75, "Images/city.png"), AIObject(xPos, yPos, range)
+        AICity(std::string cityName, int sz, std::string imageName, unsigned int range) : MobileCity(cityName, sz, imageName), AIObject(x, y, range)
         {
             //No Implementation, yet TODO?
+            currState = 4;
+        }
+
+        AICity(std::string cityName, int sz, std::string imageName, unsigned int range, double xPos, double yPos) : MobileCity(cityName, sz, imageName), AIObject(xPos, yPos, range)
+        {
+            //No Implementation, yet TODO?
+            x = xPos;
+            y = yPos;
+            currState = 4;
         }
 
         //Methods
-        std::list<TerrainTile *> * update(double, double, std::list<TerrainTile *> *);
+        void behaviorManagement();
+        void pursue();
+        void flee();
+        void idle();
+        void wander();
+        void updateCurrState(City *);
+        std::list<TerrainTile *> * update(std::list<TerrainTile *> *);
+        std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
 };
 

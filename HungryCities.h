@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <typeinfo>
 
 #ifndef CITIES_H
 #define CITIES_H
@@ -33,5 +34,6 @@ class HungryCitiesGame
         void cleanUp();
         void eventManagement();
         void cityCollisionCheck();
+        void fovCollisionCheck();
         PlayerCity * cityInitialization(std::string, std::string);
 };

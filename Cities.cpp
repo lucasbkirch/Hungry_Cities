@@ -167,11 +167,74 @@ std::list<TerrainTile *> * PlayerCity::execute(std::list<TerrainTile *> * collis
     keyPressManagement();
     return update(collisions);
 }
+//PlayerCity END --------------------------------------------------------
+//AICity BEGIN ----------------------------------------------------------
 
-std::list<TerrainTile *> * AICity::update(double x, double y, std::list<TerrainTile *> * collisions)
+void AICity::behaviorManagement()
+{
+    switch(currState){
+        case 1:
+            pursue();
+            break;
+        case 2:
+            flee();
+            break;
+        case 3:
+            idle();
+            break;
+        case 4:
+            wander();
+            break;
+    }
+
+    //TODO update current state!
+}
+
+void AICity::pursue()
+{
+    move("forward");
+}
+
+void AICity::flee()
+{
+    move("backward");
+}
+
+void AICity::idle()
+{
+    //Remain Idle
+}
+
+void AICity::wander()
+{
+    move("forward");
+    rotate("left");
+}
+
+void AICity::updateCurrState(City * otherCity)
+{
+    if (currState == 3 || currState == 4) // If idle or wandering
+        if (otherCity->size_ < size_)
+        {
+            currState = 1; //Pursue
+        }
+        else if (otherCity->size_ > size_)
+        {
+            currState = 2; // Flee
+        }
+}
+
+
+std::list<TerrainTile *> * AICity::update(std::list<TerrainTile *> * collisions)
 {
     fovSprite.setPosition(x, y);
     return MobileCity::update(collisions);
 }
 
-//PlayerCity END --------------------------------------------------------
+std::list<TerrainTile *> * AICity::execute(std::list<TerrainTile *> * collisions)
+{
+    behaviorManagement();
+    return update(collisions);
+}
+
+//AICity END ------------------------------------------------------------

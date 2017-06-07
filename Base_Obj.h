@@ -23,7 +23,7 @@ class Mobile_Object
             y = y_;
             angle = 0;
             turn_rate = 0.1;
-            baseMoveSpd = 0.25;
+            baseMoveSpd = 0.025;
             moveSpd = baseMoveSpd;
         }
 

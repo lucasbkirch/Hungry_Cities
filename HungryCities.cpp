@@ -26,6 +26,7 @@ void HungryCitiesGame::run()
         }
 
         cityCollisionCheck();
+        fovCollisionCheck();
         drawAll();
         window.setView(view);
     }
@@ -86,16 +87,33 @@ void HungryCitiesGame::cityCollisionCheck()
         tempCityDict.erase(tempCityDict.begin()->first);
 
         for(cityIter = tempCityDict.begin(); cityIter != tempCityDict.end(); cityIter++)
-        {
             if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
             {
                 std::string destroyedCity = currCity.collideWith(cityIter->second);
                 if (!destroyedCity.empty())
-                {
                     cityDict.erase(destroyedCity);
-                }
+
             }
-        }
+
+
+    }
+}
+
+void HungryCitiesGame::fovCollisionCheck()
+{
+    //Create Temp dictionary so that the current city won't be asked if it
+    //intersects itself by removing it from the temp dictionary prior to
+    //comparison with all other cities in the temp dictionary
+    std::map<std::string, City *>::iterator seeingCityIter;
+    std::map<std::string, City *>::iterator seenCityIter;
+
+    for (seeingCityIter = cityDict.begin(); seeingCityIter != cityDict.end(); seeingCityIter++)
+    {
+        AICity * ai = dynamic_cast<AICity *>((seeingCityIter->second));
+        if (ai != NULL)
+            for(seenCityIter = cityDict.begin(); seenCityIter != cityDict.end(); seenCityIter++)
+                if (seeingCityIter->second->name.compare(seenCityIter->second->name) != 0 && ai->fovSprite.getGlobalBounds().intersects((seenCityIter->second)->sprite.getGlobalBounds()))
+                    ai->updateCurrState(seenCityIter->second);
     }
 }
 
@@ -107,6 +125,7 @@ PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, s
     StaticCity * targetCity2 = new StaticCity("Berlin",    50,  staticCityImage);
     StaticCity * targetCity3 = new StaticCity("Kalingrad", 50,  staticCityImage);
     StaticCity * targetCity4 = new StaticCity("Amsterdam", 50,  staticCityImage);
+    AICity * targetCity5 = new AICity("Munich", 110,  mobileCityImage, 640, 2000, 2000);
 
     //Adding to cityDict all mobile and static cities
     cityDict.insert(std::pair<std::string, City *>(playerCity->name, playerCity));
@@ -115,6 +134,8 @@ PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, s
     cityDict.insert(std::pair<std::string, City *>(targetCity2->name, targetCity2));
     cityDict.insert(std::pair<std::string, City *>(targetCity3->name, targetCity3));
     cityDict.insert(std::pair<std::string, City *>(targetCity4->name, targetCity4));
+    cityDict.insert(std::pair<std::string, City *>(targetCity5->name, targetCity5));
+
 
     return playerCity;
 }
