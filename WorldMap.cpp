@@ -74,6 +74,9 @@ void WorldMap::InitializeTiles()
 
 void WorldMap::CityGrassAffect(std::list<TerrainTile *> * grassCollisions)
 {
+    if (grassCollisions == NULL)
+        return;
+
     std::list<TerrainTile *>::iterator grassIter;
 
     sf::Image dirtImage;

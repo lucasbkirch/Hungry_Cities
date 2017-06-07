@@ -19,8 +19,8 @@ City::City(std::string cityName, int sz, std::string txturName)
 StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName)
 {
-    x = rand() % 5000;
-    y = rand() % 5000;
+    x = rand() % 4000;
+    y = rand() % 4000;
     std::cout << "Placed at (" << x << ", " << y << ")\n";
     sprite.setPosition(x, y);
     sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
@@ -87,27 +87,23 @@ std::list<TerrainTile *> * MobileCity::update(std::list<TerrainTile *> * collisi
 
 std::list<TerrainTile *> * MobileCity::terrainSpeedCalculation(std::list<TerrainTile *> * collisions)
 {
-        std::list<TerrainTile *> * grassTiles = new std::list<TerrainTile *>();
-        std::list<TerrainTile *>::iterator collisionsIter;
-        double modifierSum = 0;
+    if (collisions == NULL)
+        return NULL;
 
-        //sf::Image dirtImage;
-        //dirtImage.loadFromFile("Images/dirt_terrain.png");
+    std::list<TerrainTile *> * grassTiles = new std::list<TerrainTile *>();
+    std::list<TerrainTile *>::iterator collisionsIter;
+    double modifierSum = 0;
 
-        for (collisionsIter = collisions->begin(); collisionsIter != collisions->end(); collisionsIter++)
+    for (collisionsIter = collisions->begin(); collisionsIter != collisions->end(); collisionsIter++)
+    {
+        modifierSum += calculateSpeedMod((*collisionsIter)->speedModifier, (*collisionsIter)->type);
+        if((*collisionsIter)->type.compare("grass") == 0 && (*collisionsIter)->tile.getGlobalBounds().intersects(wheelTracksSprite.getGlobalBounds()))
         {
-            modifierSum += calculateSpeedMod((*collisionsIter)->speedModifier, (*collisionsIter)->type);
-            if((*collisionsIter)->type.compare("grass") == 0 && (*collisionsIter)->tile.getGlobalBounds().intersects(wheelTracksSprite.getGlobalBounds()))
-            {
-
-                grassTiles->push_back((*collisionsIter));
-
-                //(*collisionsIter)->setTerrainType("dirt");
-                //texture.update(dirtImage, (*collisionsIter)->x, (*collisionsIter)->y);
-            }
+            grassTiles->push_back((*collisionsIter));
         }
-        moveSpd = (modifierSum / collisions->size());
-        return grassTiles;
+    }
+    moveSpd = (modifierSum / collisions->size());
+    return grassTiles;
 }
 
 //MobileCity END --------------------------------------------------------

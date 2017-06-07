@@ -9,8 +9,6 @@ void HungryCitiesGame::run()
 
     sf::View view; // TODO could be used later to show view radius changes
 
-    int terrainCheckTimer = 0;
-
     //Game Loop
     while (window.isOpen())
     {
@@ -18,12 +16,24 @@ void HungryCitiesGame::run()
         view.reset(sf::FloatRect(playerCity->x - (360 - 25), playerCity->y - (360 - 50), 640, 640));
         eventManagement();
 
-        std::list<TerrainTile *> * collisions = worldMap.terrainCollision(playerCity->sprite);
+        //std::list<TerrainTile *> * collisions = worldMap.terrainCollision(playerCity->sprite);
 
         //Replace with loop that calls execute for all cities
-        std::list<TerrainTile *> * grassCollisions = playerCity->execute(collisions);
+        //std::list<TerrainTile *> * grassCollisions = playerCity->execute(collisions);
 
-        worldMap.CityGrassAffect(grassCollisions);
+        //worldMap.CityGrassAffect(grassCollisions);
+
+
+        std::map<std::string, City *>::iterator cityIter;
+        for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
+        {
+            std::list<TerrainTile *> * collisions = worldMap.terrainCollision(cityIter->second->sprite);
+            std::list<TerrainTile *> * grassCollisions = cityIter->second->execute(collisions);
+            worldMap.CityGrassAffect(grassCollisions);
+
+            //worldMap.CityGrassAffect(cityIter->second->execute(worldMap.terrainCollision(cityIter->second->sprite)));
+            //cityIter->second->execute(collisions);
+        }
 
         cityCollisionCheck();
 
@@ -59,7 +69,6 @@ void HungryCitiesGame::drawAll()
         }
     }
     window.display();
-
 }
 
 void HungryCitiesGame::cleanUp()
