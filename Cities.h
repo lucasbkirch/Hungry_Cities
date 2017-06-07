@@ -39,6 +39,16 @@ class City
             return NULL;
         };
 
+        virtual std::string collideWith(City * collisionCity)
+        {
+            if (collisionCity->size_ > size_)
+                return name;
+            else if (collisionCity->size_ < size_)
+                return collisionCity->name;
+            else
+                return ""; //empty string
+        };
+
 };
 
 class StaticCity: public City, public StaticObject

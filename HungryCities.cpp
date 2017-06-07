@@ -12,17 +12,9 @@ void HungryCitiesGame::run()
     //Game Loop
     while (window.isOpen())
     {
-        //allows view to center on the playerCity
+        //View to center on the playerCity
         view.reset(sf::FloatRect(playerCity->x - (360 - 25), playerCity->y - (360 - 50), 640, 640));
         eventManagement();
-
-        //std::list<TerrainTile *> * collisions = worldMap.terrainCollision(playerCity->sprite);
-
-        //Replace with loop that calls execute for all cities
-        //std::list<TerrainTile *> * grassCollisions = playerCity->execute(collisions);
-
-        //worldMap.CityGrassAffect(grassCollisions);
-
 
         std::map<std::string, City *>::iterator cityIter;
         for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
@@ -111,14 +103,10 @@ void HungryCitiesGame::cityCollisionCheck()
             if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
             {
                 std::cout << "Collision between the cities " << currCity.name << currCity.size_ << " and " << cityIter->first << (cityIter->second)->size_  << "\n";
-                //TODO Handle Collision!
-                if (currCity.size_ >= (cityIter->second)->size_)
+                std::string destroyedCity = currCity.collideWith(cityIter->second);
+                if (!destroyedCity.empty())
                 {
-                    cityDict.erase((cityIter->second)->name);
-                }
-                else
-                {
-                    cityDict.erase(currCity.name);
+                    cityDict.erase(destroyedCity);
                 }
             }
         }
