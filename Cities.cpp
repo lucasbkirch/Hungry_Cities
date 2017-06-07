@@ -3,6 +3,8 @@
 #include "Cities.h"
 #endif // CITIES_H
 
+//City BEGIN ---------------------------------------------------------------------
+
 City::City(std::string cityName, int sz, std::string txturName)
 {
         size_ = sz;
@@ -10,6 +12,9 @@ City::City(std::string cityName, int sz, std::string txturName)
         texture.loadFromFile(txturName);
         sprite.setTexture(texture);
 }
+
+//City END ---------------------------------------------------------------------
+//StaticCity BEGIN -------------------------------------------------------------
 
 StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName)
@@ -21,6 +26,9 @@ StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
     sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
     sprite.setOrigin(25, 50);
 }
+
+//StaticCity END ----------------------------------------------------------
+//MobileCity BEGIN --------------------------------------------------------
 
 MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
 : City(cityName, sz, txturName)
@@ -102,6 +110,9 @@ std::list<TerrainTile *> * MobileCity::terrainSpeedCalculation(std::list<Terrain
         return grassTiles;
 }
 
+//MobileCity END --------------------------------------------------------
+//PlayerCity BEGIN ------------------------------------------------------
+
 PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): MobileCity(cityName, sz, txtureName)
 {
     x = 2500;
@@ -152,3 +163,4 @@ std::list<TerrainTile *> * AICity::update(double x, double y, std::list<TerrainT
     return MobileCity::update(collisions);
 }
 
+//PlayerCity END --------------------------------------------------------
