@@ -77,6 +77,11 @@ void MobileCity::rotate(std::string turn)
     {
         angle += turn_rate;
     }
+
+    if (angle > 180 || angle < -180)
+    {
+        angle = -angle;
+    }
 }
 
 double MobileCity::calculateSpeedMod(double terrainSpeedMod, std::string terrainType)
@@ -91,11 +96,6 @@ std::list<TerrainTile *> * MobileCity::update(std::list<TerrainTile *> * collisi
 
     wheelTracksSprite.setPosition(x, y); //TODO affect so it is at the end of the city
     wheelTracksSprite.setRotation(-angle);
-
-    if (angle > 360 || angle < -360)
-    {
-        angle = (int)angle % 360;
-    }
 
     return terrainSpeedCalculation(collisions);
 }
@@ -192,12 +192,12 @@ void AICity::behaviorManagement()
 
 void AICity::pursue()
 {
-    move("forward");
+    goToDestPoint();
 }
 
 void AICity::flee()
 {
-    move("backward");
+    //move("backward");
 }
 
 void AICity::idle()
@@ -213,17 +213,83 @@ void AICity::wander()
 
 void AICity::updateCurrState(City * otherCity)
 {
-    if (currState == 3 || currState == 4) // If idle or wandering
-        if (otherCity->size_ < size_)
+    if (otherCity->size_ > size_) //FLEE
+    {
+        //Break off pursuit
+        if (currState == 1)
         {
-            currState = 1; //Pursue
+            currTargetName = "";
+            currDestPoint.first = -1;
+            currDestPoint.second = -1;
         }
-        else if (otherCity->size_ > size_)
+
+        currState = 2; // Flee
+
+        //If already fleeing from that city, update the dangerPoint associated with it.
+        std::map<std::string, std::pair<double, double>>::iterator dangerIter;
+        for (dangerIter = currDangerPoints.begin(); dangerIter != currDangerPoints.end(); dangerIter++)
         {
-            currState = 2; // Flee
+            if (dangerIter->first.compare(otherCity->name))
+            {
+                currDangerPoints.erase(dangerIter->first);
+                break;
+            }
         }
+        currDangerPoints.insert(std::make_pair(otherCity->name, std::make_pair(otherCity->sprite.getPosition().x, otherCity->sprite.getPosition().y)));
+    }
+    else if (otherCity->size_ < size_ && currTargetName.empty()) // PURSUE IF NOT CURRENTLY PURSUING
+    {
+        currState = 1; //Pursue
+        currTargetName = otherCity->name;
+        currDestPoint.first = otherCity->sprite.getPosition().x;
+        currDestPoint.second = otherCity->sprite.getPosition().y;
+    }
+    else if (currState == 1 && otherCity->name.compare(currTargetName) == 0) //UPDATE currTargetPoint position of targetCity
+    {
+        currDestPoint.first = otherCity->sprite.getPosition().x;
+        currDestPoint.second = otherCity->sprite.getPosition().y;
+    }
 }
 
+void AICity::goToDestPoint()
+{
+    if (currDestPoint.first < 0 || currDestPoint.second < 0)
+    {
+        currState = 3;
+        return;
+    }
+
+    double pointDiffX = currDestPoint.first - x;
+    double pointDiffY = currDestPoint.second - y;
+
+    double targetAngle = 1;
+
+    if (pointDiffY != 0)
+        targetAngle = atan(pointDiffX / pointDiffY) * 180 / PI;
+
+    std::cout << "TargetAngle: " << targetAngle << "\n";
+    std::cout << "Current Angle: " << angle << "\n";
+
+    if (abs(targetAngle - angle) > 5)
+    {
+        double g = targetAngle - angle;
+        g = fmod((g + 180), 360) - 180;
+
+        if (g < 0)
+        {
+            rotate("right");
+        }
+        else
+            rotate("left");
+    }
+    else
+        move("forward");
+
+    if (abs(currDestPoint.first - x) < 50 && abs(currDestPoint.second - y) < 50) // If point is reached, wander
+    {
+        currState = 3;
+    }
+}
 
 std::list<TerrainTile *> * AICity::update(std::list<TerrainTile *> * collisions)
 {

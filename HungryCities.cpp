@@ -3,6 +3,8 @@
 void HungryCitiesGame::run()
 {
     srand(time(NULL));
+    sf::Clock clock;
+    sf::Time cycleTimer;
 
     //Creating and adding all the city objects
     PlayerCity * playerCity = cityInitialization("Images/city.png", "Images/circle.png");
@@ -12,6 +14,7 @@ void HungryCitiesGame::run()
     //Game Loop
     while (window.isOpen())
     {
+        clock.restart();
         //View to center on the playerCity
         view.reset(sf::FloatRect(playerCity->x - (360 - 25), playerCity->y - (360 - 50), 640, 640));
         eventManagement();
@@ -29,6 +32,14 @@ void HungryCitiesGame::run()
         fovCollisionCheck();
         drawAll();
         window.setView(view);
+
+        cycleTimer = clock.getElapsedTime();
+        while (cycleTimer.asMilliseconds() < 3)
+        {
+            cycleTimer = clock.getElapsedTime();
+        }
+        std::cout << cycleTimer.asMicroseconds() << "\n";
+
     }
 
     cleanUp();
@@ -111,9 +122,13 @@ void HungryCitiesGame::fovCollisionCheck()
     {
         AICity * ai = dynamic_cast<AICity *>((seeingCityIter->second));
         if (ai != NULL)
+        {
             for(seenCityIter = cityDict.begin(); seenCityIter != cityDict.end(); seenCityIter++)
                 if (seeingCityIter->second->name.compare(seenCityIter->second->name) != 0 && ai->fovSprite.getGlobalBounds().intersects((seenCityIter->second)->sprite.getGlobalBounds()))
+                {
                     ai->updateCurrState(seenCityIter->second);
+                }
+        }
     }
 }
 
@@ -121,19 +136,19 @@ PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, s
 {
     //Creating and adding all the city objects
     PlayerCity * playerCity = new PlayerCity("London",     100, mobileCityImage);
-    StaticCity * targetCity1 = new StaticCity("Paris",     50,  staticCityImage);
+    /*StaticCity * targetCity1 = new StaticCity("Paris",     50,  staticCityImage);
     StaticCity * targetCity2 = new StaticCity("Berlin",    50,  staticCityImage);
     StaticCity * targetCity3 = new StaticCity("Kalingrad", 50,  staticCityImage);
-    StaticCity * targetCity4 = new StaticCity("Amsterdam", 50,  staticCityImage);
-    AICity * targetCity5 = new AICity("Munich", 110,  mobileCityImage, 640, 2000, 2000);
+    StaticCity * targetCity4 = new StaticCity("Amsterdam", 50,  staticCityImage);*/
+    AICity * targetCity5 = new AICity("Munich", 110,  mobileCityImage, 150, 2000, 2000);
 
     //Adding to cityDict all mobile and static cities
     cityDict.insert(std::pair<std::string, City *>(playerCity->name, playerCity));
 
-    cityDict.insert(std::pair<std::string, City *>(targetCity1->name, targetCity1));
+    /*cityDict.insert(std::pair<std::string, City *>(targetCity1->name, targetCity1));
     cityDict.insert(std::pair<std::string, City *>(targetCity2->name, targetCity2));
     cityDict.insert(std::pair<std::string, City *>(targetCity3->name, targetCity3));
-    cityDict.insert(std::pair<std::string, City *>(targetCity4->name, targetCity4));
+    cityDict.insert(std::pair<std::string, City *>(targetCity4->name, targetCity4));*/
     cityDict.insert(std::pair<std::string, City *>(targetCity5->name, targetCity5));
 
 

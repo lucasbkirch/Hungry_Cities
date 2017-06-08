@@ -23,7 +23,7 @@ class Mobile_Object
             y = y_;
             angle = 0;
             turn_rate = 0.1;
-            baseMoveSpd = 0.025;
+            baseMoveSpd = 0.00025;
             moveSpd = baseMoveSpd;
         }
 
@@ -52,6 +52,7 @@ class AIObject
     public:
         //Member Variables
         sf::Sprite fovSprite;
+        sf::Texture texture;
 
         //Constructors
         AIObject(double x, double y, unsigned int range)
@@ -59,6 +60,8 @@ class AIObject
             fovSprite.setPosition(x, y);
             fovSprite.setTextureRect(sf::IntRect(0, 0, range, range));
             fovSprite.setOrigin(range/2, range/2);
+            texture.loadFromFile("Images/fovSprite.png");
+            fovSprite.setTexture(texture);
         }
 
         //Methods
