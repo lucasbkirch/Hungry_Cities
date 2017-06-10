@@ -3,6 +3,8 @@
 #define screenSizeSpawnArea 4500
 #define screenSize 5000
 
+#define PI 3.14159265
+
 class StaticObject
 {
     public:
@@ -66,4 +68,5 @@ class AIObject
 
         //Methods
         void update(double, double);
+        double relAngle(double, double, double, double);
 };

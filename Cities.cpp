@@ -48,7 +48,7 @@ void MobileCity::rotate(std::string turn)
         angle += turn_rate;
     }
 
-    if (angle > 180 || angle < -180)
+    if (angle >= 180 || angle <= -180)
     {
         angle = -angle;
     }
@@ -122,7 +122,6 @@ void PlayerCity::keyPressManagement()
 
 std::list<TerrainTile *> * PlayerCity::update(std::list<TerrainTile *> * collisions)
 {
-    std::cout << "angle: " << angle << "\n";
     return MobileCity::update(collisions);
 }
 
@@ -156,8 +155,14 @@ void AICity::behaviorManagement()
 
 void AICity::pursue()
 {
-    //std::cout << "pursuing " << currTargetName << "\n";
     goToDestPoint();
+
+    if (abs(currDestPoint.first - x) < 50 && abs(currDestPoint.second - y) < 50) // If point is reached, wander
+    {
+        currState = 3;
+        currTargetName = "";
+        currDestPoint = std::make_pair<double, double>(-1, -1);
+    }
 }
 
 void AICity::flee()
@@ -216,24 +221,6 @@ void AICity::updateCurrState(City * otherCity)
     }
 }
 
-double relAngle(double aiX, double aiY, double targetX, double targetY)
-{
-    double pointDiffX = aiX - targetX;
-    double pointDiffY = aiY - targetY;
-
-    double targetAngle = 1;
-
-    targetAngle = atan(pointDiffX / pointDiffY) * 180 / PI;
-
-    if (targetX > aiX && targetY > aiY)
-        targetAngle -= 180;
-
-    if (targetX < aiX && aiY < targetY)
-        targetAngle += 180;
-
-    return targetAngle;
-}
-
 void AICity::goToDestPoint()
 {
     if (currDestPoint.first < 0 || currDestPoint.second < 0)
@@ -242,26 +229,39 @@ void AICity::goToDestPoint()
         return;
     }
 
-    double pointDiffX = currDestPoint.first - x;
-    double pointDiffY = currDestPoint.second - y;
-
     double targetAngle = relAngle(x, y, currDestPoint.first, currDestPoint.second);
 
-    std::cout << angle << "  " << targetAngle << "\n";
-
     if (fabs(angle - targetAngle) >= 2)
-        rotate("right");
-
-                currState = 3;
-                currTargetName = "";
-                currDestPoint = std::make_pair<double, double>(-1, -1);
-
-    if (abs(currDestPoint.first - x) < 50 && abs(currDestPoint.second - y) < 50) // If point is reached, wander
     {
-        currState = 3;
-        currTargetName = "";
-        currDestPoint = std::make_pair<double, double>(-1, -1);
+        //if both positive or both negative
+        if (angle * targetAngle >= 0)
+        {
+            if (angle > targetAngle)
+                rotate("right");
+            else
+                rotate("left");
+        }
+        else
+        {
+            double absDiff = 360 - fabs(angle) - fabs(targetAngle);
+            if (angle > targetAngle)
+            {
+                if (absDiff >= 180)
+                    rotate("right");
+                else if (absDiff < 180)
+                    rotate("left");
+            }
+            else
+            {
+                if (absDiff >= 180)
+                    rotate("left");
+                else if (absDiff < 180)
+                    rotate("right");
+            }
+        }
     }
+    else
+        move("forward");
 }
 
 std::list<TerrainTile *> * AICity::update(std::list<TerrainTile *> * collisions)
