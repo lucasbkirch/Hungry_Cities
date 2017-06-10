@@ -38,7 +38,6 @@ void HungryCitiesGame::run()
         {
             cycleTimer = clock.getElapsedTime();
         }
-        std::cout << cycleTimer.asMicroseconds() << "\n";
 
     }
 
@@ -105,8 +104,6 @@ void HungryCitiesGame::cityCollisionCheck()
                     cityDict.erase(destroyedCity);
 
             }
-
-
     }
 }
 
@@ -140,7 +137,7 @@ PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, s
     StaticCity * targetCity2 = new StaticCity("Berlin",    50,  staticCityImage);
     StaticCity * targetCity3 = new StaticCity("Kalingrad", 50,  staticCityImage);
     StaticCity * targetCity4 = new StaticCity("Amsterdam", 50,  staticCityImage);*/
-    AICity * targetCity5 = new AICity("Munich", 110,  mobileCityImage, 150, 2000, 2000);
+    AICity * targetCity5 = new AICity("Munich", 110,  mobileCityImage, 200, 2000, 2000);
 
     //Adding to cityDict all mobile and static cities
     cityDict.insert(std::pair<std::string, City *>(playerCity->name, playerCity));

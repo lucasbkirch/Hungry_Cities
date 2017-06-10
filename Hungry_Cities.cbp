@@ -79,6 +79,7 @@
 		<Unit filename="Images/circle.png" />
 		<Unit filename="Images/city.png" />
 		<Unit filename="Images/dirt_terrain.png" />
+		<Unit filename="Images/fovSprite.png" />
 		<Unit filename="Images/map_1.png" />
 		<Unit filename="Images/wagon_wheel_icon.png" />
 		<Unit filename="Images/wheel.png" />
