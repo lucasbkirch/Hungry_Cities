@@ -3,29 +3,7 @@
 #include "Cities.h"
 #endif // CITIES_H
 
-//City BEGIN ---------------------------------------------------------------------
-
-City::City(std::string cityName, int sz, std::string txturName)
-{
-        size_ = sz;
-        name = cityName;
-        texture.loadFromFile(txturName);
-        sprite.setTexture(texture);
-}
-
-//City END ---------------------------------------------------------------------
 //StaticCity BEGIN -------------------------------------------------------------
-
-StaticCity::StaticCity(std::string cityName, int sz, std::string txturName)
-: City(cityName, sz, txturName)
-{
-    x = rand() % screenSizeSpawnArea + 250;
-    y = rand() % screenSizeSpawnArea + 250;
-    std::cout << "Placed at (" << x << ", " << y << ")\n";
-    sprite.setPosition(x, y);
-    sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
-    sprite.setOrigin(25, 50);
-}
 
 std::list<TerrainTile *> * StaticCity::execute(std::list<TerrainTile *> *)
 {
@@ -34,14 +12,6 @@ std::list<TerrainTile *> * StaticCity::execute(std::list<TerrainTile *> *)
 
 //StaticCity END ----------------------------------------------------------
 //MobileCity BEGIN --------------------------------------------------------
-
-MobileCity::MobileCity(std::string cityName, int sz, std::string txturName)
-: City(cityName, sz, txturName)
-{
-    sprite.setTextureRect(sf::IntRect(0, 0, 50, 100));
-    wheelTracksSprite.setTextureRect(sf::IntRect(0, 80, 10, 20));
-    sprite.setOrigin(25, 50);
-}
 
 void MobileCity::move(std::string direction)
 {
@@ -123,13 +93,6 @@ std::list<TerrainTile *> * MobileCity::terrainSpeedCalculation(std::list<Terrain
 
 //MobileCity END --------------------------------------------------------
 //PlayerCity BEGIN ------------------------------------------------------
-
-PlayerCity::PlayerCity(std::string cityName, int sz, std::string txtureName): MobileCity(cityName, sz, txtureName)
-{
-    x = 2500;
-    y = 2500;
-    sprite.setPosition(x, y);
-}
 
 void PlayerCity::keyPressManagement()
 {
@@ -314,8 +277,3 @@ std::list<TerrainTile *> * AICity::execute(std::list<TerrainTile *> * collisions
 }
 
 //AICity END ------------------------------------------------------------
-
-bool XOR(bool a, bool b)
-{
-    return (a + b) % 2;
-}

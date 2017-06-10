@@ -29,7 +29,14 @@ class City
         std::string name;
 
         //Constructors
-        City(std::string, int, std::string);
+
+        City(std::string cityName, int sz, std::string txturName)
+        {
+                size_ = sz;
+                name = cityName;
+                texture.loadFromFile(txturName);
+                sprite.setTexture(texture);
+        }
         virtual ~City(){} //TODO -- https://stackoverflow.com/questions/15114093/getting-source-type-is-not-polymorphic-when-trying-to-use-dynamic-cast
 
         //Methods
@@ -56,7 +63,16 @@ class StaticCity: public City, public StaticObject
     private:
     public:
         //Constructors
-        StaticCity(std::string, int, std::string);
+        StaticCity(std::string cityName, int sz, std::string txturName)
+        : City(cityName, sz, txturName)
+        {
+            x = rand() % screenSizeSpawnArea + 250;
+            y = rand() % screenSizeSpawnArea + 250;
+            std::cout << "Placed at (" << x << ", " << y << ")\n";
+            sprite.setPosition(x, y);
+            sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
+            sprite.setOrigin(25, 50);
+        }
         std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
 };
 
@@ -68,7 +84,13 @@ class MobileCity: public City, public Mobile_Object
         sf::Sprite wheelTracksSprite;
 
         //Constructors
-        MobileCity(std::string, int, std::string);
+        MobileCity(std::string cityName, int sz, std::string txturName)
+        : City(cityName, sz, txturName)
+        {
+            sprite.setTextureRect(sf::IntRect(0, 0, 50, 100));
+            wheelTracksSprite.setTextureRect(sf::IntRect(0, 80, 10, 20));
+            sprite.setOrigin(25, 50);
+        }
 
         //Methods
         void move(std::string direction);
@@ -85,7 +107,12 @@ class PlayerCity: public MobileCity
     private:
     public:
         //Constructors
-        PlayerCity(std::string, int, std::string);
+        PlayerCity(std::string cityName, int sz, std::string txtureName): MobileCity(cityName, sz, txtureName)
+        {
+            x = 2500;
+            y = 2500;
+            sprite.setPosition(x, y);
+        }
 
         //Methods
         void keyPressManagement();
