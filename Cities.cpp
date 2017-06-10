@@ -244,21 +244,13 @@ void AICity::goToDestPoint()
         else
         {
             double absDiff = 360 - fabs(angle) - fabs(targetAngle);
-            if (angle > targetAngle)
-            {
-                if (absDiff >= 180)
-                    rotate("right");
-                else if (absDiff < 180)
-                    rotate("left");
-            }
+
+            if ((angle > targetAngle && absDiff >= 180) || (angle <= targetAngle && absDiff < 180))
+                rotate("right");
+
             else
-            {
-                if (absDiff >= 180)
-                    rotate("left");
-                else if (absDiff < 180)
-                    rotate("right");
-            }
-        }
+                rotate("left");
+        //}
     }
     else
         move("forward");
