@@ -78,5 +78,5 @@ class AIObject
 
         //Methods
         void update(double, double);
-        double relAngle(double, double, double, double);
+        double calcRelativeAngle(std::pair<double, double>, std::pair<double, double>);
 };

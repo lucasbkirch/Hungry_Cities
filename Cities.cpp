@@ -136,8 +136,6 @@ void AICity::behaviorManagement()
             wander();
             break;
     }
-
-    //TODO update current state!
 }
 
 void AICity::pursue()
@@ -154,7 +152,7 @@ void AICity::pursue()
 
 void AICity::flee()
 {
-    //move("backward");
+
 }
 
 void AICity::idle()
@@ -216,7 +214,7 @@ void AICity::goToDestPoint()
         return;
     }
 
-    double targetAngle = relAngle(x, y, currDestPoint.first, currDestPoint.second);
+    double targetAngle = calcRelativeAngle(std::make_pair(x, y), std::make_pair(currDestPoint.first, currDestPoint.second));
 
     if (fabs(angle - targetAngle) >= 2)
     {
