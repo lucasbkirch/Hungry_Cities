@@ -9,6 +9,12 @@
 #define IDLE 3
 #define WANDER 4
 
+#define FORWARD -1
+#define BACKWARD 1
+
+#define LEFT 1
+#define RIGHT -1
+
 class StaticObject
 {
     public:

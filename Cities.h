@@ -93,8 +93,8 @@ class MobileCity: public City, public Mobile_Object
         }
 
         //Methods
-        void move(std::string direction);
-        void rotate(std::string turn);
+        void movement(int direction);
+        void rotation(int turn);
 
         double calculateSpeedMod(double, std::string);
 

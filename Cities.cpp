@@ -13,18 +13,12 @@ std::list<TerrainTile *> * StaticCity::execute(std::list<TerrainTile *> *)
 //StaticCity END ----------------------------------------------------------
 //MobileCity BEGIN --------------------------------------------------------
 
-void MobileCity::move(std::string direction)
+void MobileCity::movement(int direction)
 {
-    int dir = 0;
-    if (direction.compare("forward") == 0)
-        dir = -1;
-    else if (direction.compare("backward") == 0)
-        dir = 1;
-
     double radians = angle * PI / 180;
 
-    y += (dir * std::cos(radians) * moveSpd);
-    x += (dir * std::sin(radians) * moveSpd);
+    y += (direction * std::cos(radians) * moveSpd);
+    x += (direction * std::sin(radians) * moveSpd);
 
     if (x > screenSize)
         x = screenSize;
@@ -37,16 +31,9 @@ void MobileCity::move(std::string direction)
         y = 0;
 }
 
-void MobileCity::rotate(std::string turn)
+void MobileCity::rotation(int turn)
 {
-    if (turn.compare("right") == 0)
-    {
-        angle -= turn_rate;
-    }
-    else if (turn.compare("left") == 0)
-    {
-        angle += turn_rate;
-    }
+    angle = angle + (turn * turn_rate);
 
     if (angle >= 180 || angle <= -180)
     {
@@ -103,20 +90,20 @@ void PlayerCity::keyPressManagement()
 
     if (up_pressed)
     {
-        move("forward");
+        movement(FORWARD);
     }
     else if (down_pressed)
     {
-        move("backward");
+        movement(BACKWARD);
     }
 
     if (left_pressed && (up_pressed ^ down_pressed))
     {
-        rotate("left");
+        rotation(LEFT);
     }
     else if (right_pressed && (up_pressed ^ down_pressed))
     {
-        rotate("right");
+        rotation(RIGHT);
     }
 }
 
@@ -177,8 +164,8 @@ void AICity::idle()
 
 void AICity::wander()
 {
-    move("forward");
-    rotate("left");
+    movement(FORWARD);
+    rotation(LEFT);
 }
 
 void AICity::updateCurrState(City * otherCity)
@@ -237,23 +224,23 @@ void AICity::goToDestPoint()
         if (angle * targetAngle >= 0)
         {
             if (angle > targetAngle)
-                rotate("right");
+                rotation(RIGHT);
             else
-                rotate("left");
+                rotation(LEFT);
         }
         else
         {
             double absDiff = 360 - fabs(angle) - fabs(targetAngle);
 
             if ((angle > targetAngle && absDiff >= 180) || (angle <= targetAngle && absDiff < 180))
-                rotate("right");
+                rotation(RIGHT);
 
             else
-                rotate("left");
+                rotation(LEFT);
         }
     }
     else
-        move("forward");
+        movement(FORWARD);
 }
 
 std::list<TerrainTile *> * AICity::update(std::list<TerrainTile *> * collisions)
