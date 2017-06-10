@@ -4,6 +4,10 @@
 #define screenSize 5000
 
 #define PI 3.14159265
+#define PURSUE 1
+#define FLEE 2
+#define IDLE 3
+#define WANDER 4
 
 class StaticObject
 {

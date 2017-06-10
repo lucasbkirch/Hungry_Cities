@@ -136,16 +136,16 @@ std::list<TerrainTile *> * PlayerCity::execute(std::list<TerrainTile *> * collis
 void AICity::behaviorManagement()
 {
     switch(currState){
-        case 1:
+        case PURSUE:
             pursue();
             break;
-        case 2:
+        case FLEE:
             flee();
             break;
-        case 3:
+        case IDLE:
             idle();
             break;
-        case 4:
+        case WANDER:
             wander();
             break;
     }
@@ -159,7 +159,7 @@ void AICity::pursue()
 
     if (abs(currDestPoint.first - x) < 50 && abs(currDestPoint.second - y) < 50) // If point is reached, wander
     {
-        currState = 3;
+        currState = WANDER;
         currTargetName = "";
         currDestPoint = std::make_pair<double, double>(-1, -1);
     }
@@ -186,14 +186,14 @@ void AICity::updateCurrState(City * otherCity)
     if (otherCity->size_ > size_) //FLEE
     {
         //Break off pursuit
-        if (currState == 1)
+        if (currState == PURSUE)
         {
             currTargetName = "";
             currDestPoint.first = -1;
             currDestPoint.second = -1;
         }
 
-        currState = 2; // Flee
+        currState = FLEE; // Flee
 
         //If already fleeing from that city, update the dangerPoint associated with it.
         std::map<std::string, std::pair<double, double>>::iterator dangerIter;
@@ -209,12 +209,12 @@ void AICity::updateCurrState(City * otherCity)
     }
     else if (otherCity->size_ < size_ && currTargetName.empty()) // PURSUE IF NOT CURRENTLY PURSUING
     {
-        currState = 1; //Pursue
+        currState = PURSUE; //Pursue
         currTargetName = otherCity->name;
         currDestPoint.first = otherCity->sprite.getPosition().x;
         currDestPoint.second = otherCity->sprite.getPosition().y;
     }
-    else if (currState == 1 && otherCity->name.compare(currTargetName) == 0) //UPDATE currTargetPoint position of targetCity
+    else if (currState == PURSUE && otherCity->name.compare(currTargetName) == 0) //UPDATE currTargetPoint position of targetCity
     {
         currDestPoint.first = otherCity->sprite.getPosition().x;
         currDestPoint.second = otherCity->sprite.getPosition().y;
@@ -225,7 +225,7 @@ void AICity::goToDestPoint()
 {
     if (currDestPoint.first < 0 || currDestPoint.second < 0)
     {
-        currState = 3;
+        currState = WANDER;
         return;
     }
 
@@ -250,7 +250,7 @@ void AICity::goToDestPoint()
 
             else
                 rotate("left");
-        //}
+        }
     }
     else
         move("forward");
