@@ -65,13 +65,16 @@ class AIObject
         //Member Variables
         sf::Sprite fovSprite;
         sf::Texture texture;
+        unsigned int range;
 
         //Constructors
-        AIObject(double x, double y, unsigned int range)
+        AIObject(double x, double y, unsigned int range_)
         {
+            range = range_;
+            fovSprite.setOrigin(range/2, range/2);
+
             fovSprite.setPosition(x, y);
             fovSprite.setTextureRect(sf::IntRect(0, 0, range, range));
-            fovSprite.setOrigin(range/2, range/2);
             texture.loadFromFile("Images/fovSprite.png");
             fovSprite.setTexture(texture);
         }

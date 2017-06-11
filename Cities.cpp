@@ -144,7 +144,7 @@ void AICity::pursue()
 
     if (abs(currDestPoint.first - x) < 50 && abs(currDestPoint.second - y) < 50) // If point is reached, wander
     {
-        currState = WANDER;
+        currState = IDLE;
         currTargetName = "";
         currDestPoint = std::make_pair<double, double>(-1, -1);
     }
@@ -152,7 +152,39 @@ void AICity::pursue()
 
 void AICity::flee()
 {
+    if (abs(currDestPoint.first - x) < 50 && abs(currDestPoint.second - y) < 50 || currDangerPoints.size() < 1) // If point is reached, wander
+    {
+        currState = IDLE;
+        currTargetName = "";
+        currDestPoint = std::make_pair<double, double>(-1, -1);
+    }
 
+    calcFleePoint();
+    goToDestPoint();
+}
+
+void AICity::calcFleePoint()
+{
+        std::map<std::string, std::pair<double, double>>::iterator dangerIter;
+        double totalDeg = 0;
+        for (dangerIter = currDangerPoints.begin(); dangerIter != currDangerPoints.end(); dangerIter++)
+        {
+            totalDeg += calcRelativeAngle(std::make_pair(x, y), dangerIter->second);
+        }
+
+        //inverse the angle
+        double fleeDeg = totalDeg / currDangerPoints.size();
+        /*fleeDeg -= 180;
+        if (fleeDeg < -180)
+        {
+            fleeDeg = 180 - fabs(fmod(fleeDeg, 180));
+        }*/
+
+        std::cout << "Flee Degree: " << fleeDeg << "\n";
+
+        currDestPoint = std::make_pair(sin(-fleeDeg) * range + x, cos(-fleeDeg) * range + y);
+
+        currDangerPoints.clear();
 }
 
 void AICity::idle()
@@ -184,8 +216,9 @@ void AICity::updateCurrState(City * otherCity)
         std::map<std::string, std::pair<double, double>>::iterator dangerIter;
         for (dangerIter = currDangerPoints.begin(); dangerIter != currDangerPoints.end(); dangerIter++)
         {
-            if (dangerIter->first.compare(otherCity->name))
+            if (dangerIter->first.compare(otherCity->name) == 0)
             {
+                std::cout << "Updating danger point\n";
                 currDangerPoints.erase(dangerIter->first);
                 break;
             }
@@ -208,10 +241,21 @@ void AICity::updateCurrState(City * otherCity)
 
 void AICity::goToDestPoint()
 {
-    if (currDestPoint.first < 0 || currDestPoint.second < 0)
+    if (currDestPoint.first < 0)
     {
-        currState = WANDER;
-        return;
+        currDestPoint.first = 0;
+    }
+    else if (currDestPoint.second < 0)
+    {
+        currDestPoint.first = 0;
+    }
+    else if (currDestPoint.first > screenSize)
+    {
+            currDestPoint.first = screenSize;
+    }
+    else if (currDestPoint.second > screenSize)
+    {
+            currDestPoint.second = screenSize;
     }
 
     double targetAngle = calcRelativeAngle(std::make_pair(x, y), std::make_pair(currDestPoint.first, currDestPoint.second));

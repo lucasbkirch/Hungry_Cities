@@ -128,14 +128,14 @@ class AICity: public MobileCity, public AIObject
         //Member Variables
         int currState;
         std::string currTargetName;
-        std::pair<int, int> currDestPoint;
+        std::pair<double, double> currDestPoint;
         std::map<std::string, std::pair<double, double>> currDangerPoints;
 
         //Constructors
         AICity(std::string cityName, int sz, std::string imageName, unsigned int range) : MobileCity(cityName, sz, imageName), AIObject(x, y, range)
         {
             //No Implementation, yet TODO?
-            currState = 3;
+            currState = IDLE;
             currDestPoint = std::make_pair(-1, -1);
         }
 
@@ -144,7 +144,7 @@ class AICity: public MobileCity, public AIObject
             //No Implementation, yet TODO?
             x = xPos;
             y = yPos;
-            currState = 3;
+            currState = IDLE;
             currDestPoint = std::make_pair(-1, -1);
         }
 
@@ -156,6 +156,7 @@ class AICity: public MobileCity, public AIObject
         void wander();
         void updateCurrState(City *);
         void goToDestPoint();
+        void calcFleePoint();
         std::list<TerrainTile *> * update(std::list<TerrainTile *> *);
         std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
 };
