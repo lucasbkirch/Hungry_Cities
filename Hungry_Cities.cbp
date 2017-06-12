@@ -70,6 +70,8 @@
 		<Linker>
 			<Add directory="C:/Users/Lucas Kirchhoff/Documents/CS FUTURE/SFML-2.4.2/lib" />
 		</Linker>
+		<Unit filename="AI.cpp" />
+		<Unit filename="AI.h" />
 		<Unit filename="Base_Obj.cpp" />
 		<Unit filename="Base_Obj.h" />
 		<Unit filename="Cities.cpp" />
