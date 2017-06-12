@@ -121,17 +121,6 @@ void AICity::updateCurrState(City * otherCity)
 
         currState = FLEE; // Flee
 
-        //If already fleeing from that city, update the dangerPoint associated with it.
-        std::map<std::string, std::pair<double, double>>::iterator dangerIter;
-        for (dangerIter = currDangerPoints.begin(); dangerIter != currDangerPoints.end(); dangerIter++)
-        {
-            if (dangerIter->first.compare(otherCity->name) == 0)
-            {
-                std::cout << "Updating danger point\n";
-                currDangerPoints.erase(dangerIter->first);
-                break;
-            }
-        }
         currDangerPoints.insert(std::make_pair(otherCity->name, std::make_pair(otherCity->sprite.getPosition().x, otherCity->sprite.getPosition().y)));
     }
     else if (otherCity->size_ < size_ && currTargetName.empty()) // PURSUE IF NOT CURRENTLY PURSUING
