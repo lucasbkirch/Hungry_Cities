@@ -157,7 +157,10 @@ void AICity::goToDestPoint()
                 rotation(LEFT);
         }
     }
-    else
+
+    double anglediff = fmod((angle - targetAngle + 180 + 360), 360) - 180;
+
+    if (anglediff <= 90 && anglediff >= -90)
         movement(FORWARD);
 }
 
