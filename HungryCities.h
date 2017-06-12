@@ -7,6 +7,11 @@
 #include "Cities.h"
 #endif // CITIES_H
 
+#ifndef AI_H
+#define AI_H
+#include "AI.h"
+#endif // AI_H
+
 #define windowSize 640
 
 class HungryCitiesGame

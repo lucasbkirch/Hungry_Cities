@@ -121,43 +121,4 @@ class PlayerCity: public MobileCity
         std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
 };
 
-class AICity: public MobileCity, public AIObject
-{
-    private:
-    public:
-        //Member Variables
-        int currState;
-        std::string currTargetName;
-        std::pair<double, double> currDestPoint;
-        std::map<std::string, std::pair<double, double>> currDangerPoints;
-
-        //Constructors
-        AICity(std::string cityName, int sz, std::string imageName, unsigned int range) : MobileCity(cityName, sz, imageName), AIObject(x, y, range)
-        {
-            //No Implementation, yet TODO?
-            currState = IDLE;
-            currDestPoint = std::make_pair(-1, -1);
-        }
-
-        AICity(std::string cityName, int sz, std::string imageName, unsigned int range, double xPos, double yPos) : MobileCity(cityName, sz, imageName), AIObject(xPos, yPos, range)
-        {
-            //No Implementation, yet TODO?
-            x = xPos;
-            y = yPos;
-            currState = IDLE;
-            currDestPoint = std::make_pair(-1, -1);
-        }
-
-        //Methods
-        void behaviorManagement();
-        void pursue();
-        void flee();
-        void idle();
-        void wander();
-        void updateCurrState(City *);
-        void goToDestPoint();
-        void calcFleePoint();
-        std::list<TerrainTile *> * update(std::list<TerrainTile *> *);
-        std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
-};
 

@@ -58,28 +58,3 @@ class Mobile_Object
             moveSpd = baseMoveSpd;
         }
 };
-
-class AIObject
-{
-    public:
-        //Member Variables
-        sf::Sprite fovSprite;
-        sf::Texture texture;
-        unsigned int range;
-
-        //Constructors
-        AIObject(double x, double y, unsigned int range_)
-        {
-            range = range_;
-            fovSprite.setOrigin(range/2, range/2);
-
-            fovSprite.setPosition(x, y);
-            fovSprite.setTextureRect(sf::IntRect(0, 0, range, range));
-            texture.loadFromFile("Images/fovSprite.png");
-            fovSprite.setTexture(texture);
-        }
-
-        //Methods
-        void update(double, double);
-        double calcRelativeAngle(std::pair<double, double>, std::pair<double, double>);
-};
