@@ -79,12 +79,16 @@ void AICity::calcFleePoint()
         for (dangerIter = currDangerPoints.begin(); dangerIter != currDangerPoints.end(); dangerIter++)
         {
             totalDeg += calcRelativeAngle(std::make_pair(x, y), dangerIter->second);
+            std::cout << "currDangerPoint for " << dangerIter->first << ": (" << dangerIter->second.first << ", " << dangerIter->second.second << ")\n";
         }
+        std::cout << "totalDeg: (" << totalDeg << ")\n";
 
         //inverse the angle
         double fleeDeg = totalDeg / currDangerPoints.size();
 
         setCurrDestPoint(sin(-fleeDeg) * range + x, cos(-fleeDeg) * range + y);
+
+        std::cout << "CurrDestPoint: (" << currDestPoint.first << ", " << currDestPoint.second << ")\n\n";
 
         currDangerPoints.clear();
 }
