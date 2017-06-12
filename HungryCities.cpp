@@ -61,13 +61,12 @@ void HungryCitiesGame::drawAll()
 
 void HungryCitiesGame::cleanUp()
 {
-    std::cout << "Cleanup\n";
     std::map<std::string, City *>::iterator cityIter;
     for(cityIter = cityDict.begin(); cityIter != cityDict.end(); cityIter++)
     {
-        std::cout << "deallocating " << cityIter->second->name << "\n";
         delete cityIter->second;
     }
+    cityDict.clear();
 }
 
 void HungryCitiesGame::eventManagement()

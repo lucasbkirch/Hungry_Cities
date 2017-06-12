@@ -42,13 +42,11 @@ class City
         //Methods
         virtual std::list<TerrainTile *> * execute(std::list<TerrainTile *> *)
         {
-            std::cout << "execute() is not implemented for this City\n";
             return NULL;
         };
 
         virtual std::string collideWith(City * collisionCity)
         {
-            std::cout << collisionCity->name << ": " << collisionCity->size_ << " vs. " << name << ": " << size_ << "\n";
             if (collisionCity->size_ > size_)
                 return name;
             else if (collisionCity->size_ < size_)
@@ -68,7 +66,6 @@ class StaticCity: public City, public StaticObject
         {
             x = rand() % screenSizeSpawnArea + 250;
             y = rand() % screenSizeSpawnArea + 250;
-            std::cout << "Placed at (" << x << ", " << y << ")\n";
             sprite.setPosition(x, y);
             sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
             sprite.setOrigin(25, 50);

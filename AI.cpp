@@ -83,13 +83,6 @@ void AICity::calcFleePoint()
 
         //inverse the angle
         double fleeDeg = totalDeg / currDangerPoints.size();
-        /*fleeDeg -= 180;
-        if (fleeDeg < -180)
-        {
-            fleeDeg = 180 - fabs(fmod(fleeDeg, 180));
-        }*/
-
-        std::cout << "Flee Degree: " << fleeDeg << "\n";
 
         setCurrDestPoint(sin(-fleeDeg) * range + x, cos(-fleeDeg) * range + y);
 
