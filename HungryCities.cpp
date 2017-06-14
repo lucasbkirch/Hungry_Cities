@@ -99,8 +99,8 @@ void HungryCitiesGame::cityCollisionCheck()
             if (currCity.sprite.getGlobalBounds().intersects((cityIter->second)->sprite.getGlobalBounds()))
             {
                 std::string destroyedCity = currCity.collideWith(cityIter->second);
-                //if (!destroyedCity.empty()) //COMMENTED OUT FOR TESTING PURPOSES
-                    //cityDict.erase(destroyedCity);
+                if (!destroyedCity.empty()) //COMMENTED OUT FOR TESTING PURPOSES
+                    cityDict.erase(destroyedCity);
 
             }
     }

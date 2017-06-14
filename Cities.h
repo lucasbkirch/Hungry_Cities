@@ -109,7 +109,6 @@ class PlayerCity: public MobileCity
             x = 2500;
             y = 2500;
             sprite.setPosition(x, y);
-            turn_rate = 0.2; //TODO change, currently for testing
         }
 
         //Methods
