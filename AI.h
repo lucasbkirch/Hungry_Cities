@@ -31,6 +31,7 @@ class AIObject
         //Methods
         void update(double, double);
         double calcRelativeAngle(std::pair<double, double>, std::pair<double, double>);
+        double inverseAngle(double);
 };
 
 
@@ -42,6 +43,7 @@ class AICity: public MobileCity, public AIObject
     public:
         //Member Variables
         int currState;
+        bool movingForward;
         std::string currTargetName;
         std::map<std::string, std::pair<double, double>> currDangerPoints;
 
@@ -60,6 +62,7 @@ class AICity: public MobileCity, public AIObject
             y = yPos;
             currState = IDLE;
             currDestPoint = std::make_pair(-1, -1);
+            movingForward = false;
         }
 
         //Methods

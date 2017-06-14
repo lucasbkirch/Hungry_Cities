@@ -11,20 +11,14 @@ void AIObject::update(double x, double y)
 
 double AIObject::calcRelativeAngle(std::pair<double, double> aiPos, std::pair<double, double> targetPos)
 {
-    double pointDiffX = aiPos.first - targetPos.first;
-    double pointDiffY = aiPos.second - targetPos.second;
+    return atan2(aiPos.first - targetPos.first, aiPos.second - targetPos.second) * 180 / PI;
+}
 
-    double targetAngle = 1;
-
-    targetAngle = atan(pointDiffX / pointDiffY) * 180 / PI;
-
-    if (targetPos.first > aiPos.first && targetPos.second > aiPos.second)
-        targetAngle -= 180;
-
-    if (targetPos.first < aiPos.first && aiPos.second < targetPos.second)
-        targetAngle += 180;
-
-    return targetAngle;
+double AIObject::inverseAngle(double pAngle)
+{
+    if (pAngle - 180 < -180)
+        return pAngle + 180;
+    return pAngle - 180;
 }
 
 //AICity BEGIN ----------------------------------------------------------
@@ -56,6 +50,7 @@ void AICity::pursue()
         currState = IDLE;
         currTargetName = "";
         setCurrDestPoint(0, 0);
+        movingForward = false;
     }
 }
 
@@ -66,6 +61,7 @@ void AICity::flee()
         currState = IDLE;
         currTargetName = "";
         setCurrDestPoint(0, 0);
+        movingForward = false;
     }
 
     calcFleePoint();
@@ -79,16 +75,14 @@ void AICity::calcFleePoint()
         for (dangerIter = currDangerPoints.begin(); dangerIter != currDangerPoints.end(); dangerIter++)
         {
             totalDeg += calcRelativeAngle(std::make_pair(x, y), dangerIter->second);
-            std::cout << "currDangerPoint for " << dangerIter->first << ": (" << dangerIter->second.first << ", " << dangerIter->second.second << ")\n";
         }
-        std::cout << "totalDeg: (" << totalDeg << ")\n";
 
         //inverse the angle
         double fleeDeg = totalDeg / currDangerPoints.size();
 
-        setCurrDestPoint(sin(-fleeDeg) * range + x, cos(-fleeDeg) * range + y);
-
-        std::cout << "CurrDestPoint: (" << currDestPoint.first << ", " << currDestPoint.second << ")\n\n";
+        setCurrDestPoint(sin(fleeDeg / 180 * PI) * range + x, cos(fleeDeg / 180 * PI) * range + y);
+        if (name.compare("M6") == 0)
+            std::cout << name << "'s CurrDestPoint: (" << currDestPoint.first << ", " << currDestPoint.second << ")\n\n";
 
         currDangerPoints.clear();
 }
@@ -115,9 +109,7 @@ void AICity::updateCurrState(City * otherCity)
             currDestPoint.first = -1;
             currDestPoint.second = -1;
         }
-
         currState = FLEE; // Flee
-
         currDangerPoints.insert(std::make_pair(otherCity->name, std::make_pair(otherCity->sprite.getPosition().x, otherCity->sprite.getPosition().y)));
     }
     else if (otherCity->size_ < size_ && currTargetName.empty()) // PURSUE IF NOT CURRENTLY PURSUING
@@ -135,6 +127,8 @@ void AICity::updateCurrState(City * otherCity)
 void AICity::goToDestPoint()
 {
     double targetAngle = calcRelativeAngle(std::make_pair(x, y), std::make_pair(currDestPoint.first, currDestPoint.second));
+    //std::cout << "Input: (" << x << ", " << y << ") (" << currDestPoint.first << ", " << currDestPoint.second << ")\n";
+    //std::cout << "Output: " << targetAngle << "\n";
 
     if (fabs(angle - targetAngle) >= 2)
     {
@@ -149,19 +143,30 @@ void AICity::goToDestPoint()
         else
         {
             double absDiff = 360 - fabs(angle) - fabs(targetAngle);
-
-            if ((angle > targetAngle && absDiff >= 180) || (angle <= targetAngle && absDiff < 180))
-                rotation(RIGHT);
-
+            if (angle > targetAngle)
+            {
+                if (absDiff >= 180)
+                    rotation(RIGHT);
+                else if (absDiff < 180)
+                    rotation(LEFT);
+            }
             else
-                rotation(LEFT);
+            {
+                if (absDiff >= 180)
+                    rotation(LEFT);
+                else if (absDiff < 180)
+                    rotation(RIGHT);
+            }
         }
     }
-
-    double anglediff = fmod((angle - targetAngle + 180 + 360), 360) - 180;
-
-    if (anglediff <= 90 && anglediff >= -90)
+    else
         movement(FORWARD);
+
+    //angleDiff > 90
+    /*if ((180 - fabs(fabs(angle - targetAngle) - 180)) > 90)
+    {
+        movement(FORWARD);
+    }*/
 }
 
 std::list<TerrainTile *> * AICity::update(std::list<TerrainTile *> * collisions)
