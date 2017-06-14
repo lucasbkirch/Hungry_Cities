@@ -159,14 +159,16 @@ void AICity::goToDestPoint()
             }
         }
     }
-    else
-        movement(FORWARD);
 
     //angleDiff > 90
-    /*if ((180 - fabs(fabs(angle - targetAngle) - 180)) > 90)
+    if ((180 - fabs(fabs(angle - targetAngle) - 180)) < 90)
     {
         movement(FORWARD);
-    }*/
+    }
+    else if ((180 - fabs(fabs(angle - targetAngle) - 180)) > 90 )
+    {
+        movement(BACKWARD);
+    }
 }
 
 std::list<TerrainTile *> * AICity::update(std::list<TerrainTile *> * collisions)

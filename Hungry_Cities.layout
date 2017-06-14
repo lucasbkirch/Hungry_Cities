@@ -2,14 +2,34 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="Base_Obj.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="23" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="Cities.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="911" topLine="17" />
+			<Cursor1 position="701" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="AI.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1288" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="AI.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4723" topLine="88" />
+		</Cursor>
+		<Folding>
+			<Collapse line="7" />
+			<Collapse line="17" />
+			<Collapse line="26" />
+			<Collapse line="44" />
+			<Collapse line="57" />
+			<Collapse line="71" />
+			<Collapse line="101" />
+			<Collapse line="184" />
+		</Folding>
+	</File>
+	<File name="HungryCities.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="212" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="WorldMap.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -28,22 +48,9 @@
 			<Cursor1 position="58" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Base_Obj.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Base_Obj.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="361" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="HungryCities.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2036" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="3" />
-		</Folding>
-	</File>
-	<File name="HungryCities.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="212" topLine="0" />
+			<Cursor1 position="23" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="WorldMap.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -51,29 +58,22 @@
 			<Cursor1 position="1936" topLine="37" />
 		</Cursor>
 	</File>
-	<File name="AI.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="HungryCities.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2621" topLine="45" />
+			<Cursor1 position="6647" topLine="96" />
 		</Cursor>
 		<Folding>
-			<Collapse line="7" />
-			<Collapse line="26" />
-			<Collapse line="44" />
-			<Collapse line="57" />
-			<Collapse line="94" />
+			<Collapse line="3" />
 		</Folding>
+	</File>
+	<File name="Base_Obj.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="361" topLine="3" />
+		</Cursor>
 	</File>
 	<File name="Cities.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="932" topLine="89" />
 		</Cursor>
-	</File>
-	<File name="AI.h" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1814" topLine="23" />
-		</Cursor>
-		<Folding>
-			<Collapse line="11" />
-		</Folding>
 	</File>
 </CodeBlocks_layout_file>
