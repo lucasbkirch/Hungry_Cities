@@ -20,13 +20,13 @@ void MobileCity::movement(int direction)
     y += (direction * std::cos(radians) * moveSpd);
     x += (direction * std::sin(radians) * moveSpd);
 
-    if (x > screenSize)
-        x = screenSize;
+    if (x > mapSize)
+        x = mapSize;
     else if (x < 0)
         x = 0;
 
-    if (y > screenSize)
-        y = screenSize;
+    if (y > mapSize)
+        y = mapSize;
     else if (y < 0)
         y = 0;
 }

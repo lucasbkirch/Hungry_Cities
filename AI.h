@@ -75,6 +75,7 @@ class AICity: public MobileCity, public AIObject
         void goToDestPoint();
         void calcFleePoint();
         void setCurrDestPoint(double, double);
+        void addDangerPoint(std::string, sf::Sprite);
         std::list<TerrainTile *> * update(std::list<TerrainTile *> *);
         std::list<TerrainTile *> * execute(std::list<TerrainTile *> *) override;
 };

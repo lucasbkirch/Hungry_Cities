@@ -71,6 +71,7 @@ void AICity::flee()
 void AICity::calcFleePoint()
 {
         std::map<std::string, std::pair<double, double>>::iterator dangerIter;
+
         std::map<std::string, std::pair<double, double>>::iterator dangerIterOuter;
 
         double DangerAngleDiffArr[currDangerPoints.size()];
@@ -88,9 +89,9 @@ void AICity::calcFleePoint()
             double fleeBound1 = 0;
             double fleeBound2 = 0;
 
-            for (int j = 0; j < currDangerPoints.size(); j++)
+            for (unsigned int j = 0; j < currDangerPoints.size(); j++)
             {
-                for (int h = 0; h < currDangerPoints.size(); h++)
+                for (unsigned int h = 0; h < currDangerPoints.size(); h++)
                 {
                     if ((180 - fabs(fabs(DangerAngleDiffArr[h] - DangerAngleDiffArr[j]) - 180)) > fleeDeg)
                     {
@@ -101,6 +102,7 @@ void AICity::calcFleePoint()
                 }
             }
             fleeDeg = (fleeBound1 + fleeBound2) / 2;
+            //TODO Figure out why this is here
             if (fleeBound1 + fleeBound2 < 180 && fleeBound1 + fleeBound2 > 0)
                 fleeDeg -= 180;
 
@@ -122,6 +124,11 @@ void AICity::wander()
     rotation(LEFT);
 }
 
+void AICity::addDangerPoint(std::string spriteName, sf::Sprite pSprite)
+{
+    currDangerPoints.insert(std::make_pair(spriteName, std::make_pair(pSprite.getPosition().x, pSprite.getPosition().y)));
+}
+
 void AICity::updateCurrState(City * otherCity)
 {
     if (otherCity->size_ > size_) //FLEE
@@ -134,7 +141,7 @@ void AICity::updateCurrState(City * otherCity)
             currDestPoint.second = -1;
         }
         currState = FLEE; // Flee
-        currDangerPoints.insert(std::make_pair(otherCity->name, std::make_pair(otherCity->sprite.getPosition().x, otherCity->sprite.getPosition().y)));
+        addDangerPoint(otherCity->name, otherCity->sprite);
     }
     else if (otherCity->size_ < size_ && currTargetName.empty()) // PURSUE IF NOT CURRENTLY PURSUING
     {
@@ -185,11 +192,11 @@ void AICity::goToDestPoint()
     //angleDiff > 90
     if ((180 - fabs(fabs(angle - targetAngle) - 180)) < 90)
     {
-        //movement(FORWARD);
+        movement(FORWARD);
     }
     else if ((180 - fabs(fabs(angle - targetAngle) - 180)) > 90 )
     {
-        //movement(BACKWARD);
+        movement(BACKWARD);
     }
 }
 
@@ -215,13 +222,13 @@ void AICity::setCurrDestPoint(double newX, double newY)
     {
         newY = 0;
     }
-    else if (newX > screenSize)
+    else if (newX > mapSize)
     {
-            newX = screenSize;
+            newX = mapSize;
     }
-    else if (newY > screenSize)
+    else if (newY > mapSize)
     {
-            newY = screenSize;
+            newY = mapSize;
     }
 
     currDestPoint.first = newX;

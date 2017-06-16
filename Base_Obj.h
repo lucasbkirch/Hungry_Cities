@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#define screenSizeSpawnArea 4500
-#define screenSize 5000
+#define mapSizeSpawnArea 4500
+#define mapSize 5000
 
 #define PI 3.14159265
 #define PURSUE 1
@@ -41,8 +41,8 @@ class Mobile_Object
 
         Mobile_Object()
         {
-            x = rand() % screenSizeSpawnArea + 250;
-            y = rand() % screenSizeSpawnArea + 250;
+            x = rand() % mapSizeSpawnArea + 250;
+            y = rand() % mapSizeSpawnArea + 250;
             angle = 0;
             turn_rate = 0.1;
             baseMoveSpd = 0.25;

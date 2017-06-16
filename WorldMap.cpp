@@ -117,10 +117,10 @@ std::list<TerrainTile *> * WorldMap::terrainCollision(sf::Sprite sprite)
     if (bottomY < 0)
         bottomY = 0;
 
-    if (topX > screenSize)
-        topX = screenSize;
-    if (topY > screenSize)
-        topY = screenSize;
+    if (topX > mapSize)
+        topX = mapSize;
+    if (topY > mapSize)
+        topY = mapSize;
 
     //Empty collisionsCollection in case of earlier use
     while (collisionsCollection.size() > 0)

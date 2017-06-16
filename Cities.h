@@ -64,8 +64,8 @@ class StaticCity: public City, public StaticObject
         StaticCity(std::string cityName, int sz, std::string txturName)
         : City(cityName, sz, txturName)
         {
-            x = rand() % screenSizeSpawnArea + 250;
-            y = rand() % screenSizeSpawnArea + 250;
+            x = rand() % mapSizeSpawnArea + 250;
+            y = rand() % mapSizeSpawnArea + 250;
             sprite.setPosition(x, y);
             sprite.setTextureRect(sf::IntRect(0, 0, 100, 100));
             sprite.setOrigin(25, 50);

@@ -114,6 +114,7 @@ void HungryCitiesGame::fovCollisionCheck()
     //comparison with all other cities in the temp dictionary
     std::map<std::string, City *>::iterator seeingCityIter;
     std::map<std::string, City *>::iterator seenCityIter;
+    std::list<sf::Sprite*>::iterator edgeSpritesIter; //May expand upon, by adding in more types of sprites to be avoided
 
     for (seeingCityIter = cityDict.begin(); seeingCityIter != cityDict.end(); seeingCityIter++)
     {
@@ -125,6 +126,18 @@ void HungryCitiesGame::fovCollisionCheck()
                 {
                     ai->updateCurrState(seenCityIter->second);
                 }
+
+            for (edgeSpritesIter = mapEdgeSprites.begin(); edgeSpritesIter != mapEdgeSprites.end(); edgeSpritesIter++)
+            {
+                if (ai->fovSprite.getGlobalBounds().intersects((*(*edgeSpritesIter)).getGlobalBounds()))
+                {
+                    std::cout << "Sprite Spotted\n";
+                    std::ostringstream myString;
+                    myString << "EdgeSprite_" << (*(*edgeSpritesIter)).getPosition().x << "," << (*(*edgeSpritesIter)).getPosition().y;
+                    std::cout << myString.str() << "\n";
+                    ai->addDangerPoint(myString.str(), *(*edgeSpritesIter));
+                }
+            }
         }
     }
 }
@@ -143,7 +156,7 @@ PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, s
 
     //AICity * targetCity8 = new AICity("C8", 90,  mobileCityImage, 600, 2500, 2700);
     //AICity * targetCity9 = new AICity("C9", 90,  mobileCityImage, 600, 2500, 2500);
-    AICity * targetCity10 = new AICity("C10", 100,  mobileCityImage, 600, 2500, 2300);
+    AICity * targetCity10 = new AICity("C10", 90,  mobileCityImage, 600, 2500, 2300);
 
     //AICity * targetCity11 = new AICity("C11", 90,  mobileCityImage, 600, 2300, 2700);
     //AICity * targetCity12 = new AICity("C12", 90,  mobileCityImage, 600, 2300, 2500);
@@ -161,17 +174,14 @@ PlayerCity * HungryCitiesGame::cityInitialization(std::string mobileCityImage, s
     cityDict.insert(std::pair<std::string, City *>(targetCity5->name, targetCity5));
     */
     //cityDict.insert(std::pair<std::string, City *>(targetCity6->name, targetCity6));
-    cityDict.insert(std::pair<std::string, City *>(targetCity7->name, targetCity7));
+    //cityDict.insert(std::pair<std::string, City *>(targetCity7->name, targetCity7));
     //cityDict.insert(std::pair<std::string, City *>(targetCity8->name, targetCity8));
     //cityDict.insert(std::pair<std::string, City *>(targetCity9->name, targetCity9));
 
     cityDict.insert(std::pair<std::string, City *>(targetCity10->name, targetCity10));
     //cityDict.insert(std::pair<std::string, City *>(targetCity11->name, targetCity11));
     //cityDict.insert(std::pair<std::string, City *>(targetCity12->name, targetCity12));
-    cityDict.insert(std::pair<std::string, City *>(targetCity13->name, targetCity13));
-
-
-
+    //cityDict.insert(std::pair<std::string, City *>(targetCity13->name, targetCity13));
 
     return playerCity;
 }
