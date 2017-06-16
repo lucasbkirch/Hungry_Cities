@@ -71,19 +71,43 @@ void AICity::flee()
 void AICity::calcFleePoint()
 {
         std::map<std::string, std::pair<double, double>>::iterator dangerIter;
-        double totalDeg = 0;
+        std::map<std::string, std::pair<double, double>>::iterator dangerIterOuter;
+
+        double DangerAngleDiffArr[currDangerPoints.size()];
+        int i = 0;
+
         for (dangerIter = currDangerPoints.begin(); dangerIter != currDangerPoints.end(); dangerIter++)
         {
-            totalDeg += calcRelativeAngle(std::make_pair(x, y), dangerIter->second);
+            DangerAngleDiffArr[i] = calcRelativeAngle(std::make_pair(x, y), dangerIter->second);
+            i++;
         }
 
-        //inverse the angle
-        double fleeDeg = totalDeg / currDangerPoints.size();
+        if (currDangerPoints.size() > 1)
+        {
+            double fleeDeg = 0;
+            double fleeBound1 = 0;
+            double fleeBound2 = 0;
 
-        setCurrDestPoint(sin(fleeDeg / 180 * PI) * range + x, cos(fleeDeg / 180 * PI) * range + y);
-        if (name.compare("M6") == 0)
-            std::cout << name << "'s CurrDestPoint: (" << currDestPoint.first << ", " << currDestPoint.second << ")\n\n";
+            for (int j = 0; j < currDangerPoints.size(); j++)
+            {
+                for (int h = 0; h < currDangerPoints.size(); h++)
+                {
+                    if ((180 - fabs(fabs(DangerAngleDiffArr[h] - DangerAngleDiffArr[j]) - 180)) > fleeDeg)
+                    {
+                        fleeDeg = 180 - fabs(fabs(DangerAngleDiffArr[h] - DangerAngleDiffArr[j]) - 180);
+                        fleeBound1 = DangerAngleDiffArr[h];
+                        fleeBound2 = DangerAngleDiffArr[j];
+                    }
+                }
+            }
+            fleeDeg = (fleeBound1 + fleeBound2) / 2;
+            if (fleeBound1 + fleeBound2 < 180 && fleeBound1 + fleeBound2 > 0)
+                fleeDeg -= 180;
 
+            setCurrDestPoint(sin(fleeDeg / 180 * PI) * range + x, cos(fleeDeg / 180 * PI) * range + y);
+        }
+        else
+            setCurrDestPoint(sin(DangerAngleDiffArr[0] / 180 * PI) * range + x, cos(DangerAngleDiffArr[0] / 180 * PI) * range + y);
         currDangerPoints.clear();
 }
 
@@ -127,8 +151,6 @@ void AICity::updateCurrState(City * otherCity)
 void AICity::goToDestPoint()
 {
     double targetAngle = calcRelativeAngle(std::make_pair(x, y), std::make_pair(currDestPoint.first, currDestPoint.second));
-    //std::cout << "Input: (" << x << ", " << y << ") (" << currDestPoint.first << ", " << currDestPoint.second << ")\n";
-    //std::cout << "Output: " << targetAngle << "\n";
 
     if (fabs(angle - targetAngle) >= 2)
     {
@@ -163,11 +185,11 @@ void AICity::goToDestPoint()
     //angleDiff > 90
     if ((180 - fabs(fabs(angle - targetAngle) - 180)) < 90)
     {
-        movement(FORWARD);
+        //movement(FORWARD);
     }
     else if ((180 - fabs(fabs(angle - targetAngle) - 180)) > 90 )
     {
-        movement(BACKWARD);
+        //movement(BACKWARD);
     }
 }
 
