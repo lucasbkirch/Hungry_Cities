@@ -90,26 +90,25 @@ void AICity::calcFleePoint()
             double fleeBound2 = 0;
 
             for (unsigned int j = 0; j < currDangerPoints.size(); j++)
-            {
                 for (unsigned int h = 0; h < currDangerPoints.size(); h++)
-                {
                     if ((180 - fabs(fabs(DangerAngleDiffArr[h] - DangerAngleDiffArr[j]) - 180)) > fleeDeg)
                     {
+                        std::cout << (180 - fabs(fabs(DangerAngleDiffArr[h] - DangerAngleDiffArr[j]) - 180)) << "\n";
+                        //std::cout << fleeDeg << "fleeDeg between " << DangerAngleDiffArr[h] << " and " << DangerAngleDiffArr[j] << "\n";
                         fleeDeg = 180 - fabs(fabs(DangerAngleDiffArr[h] - DangerAngleDiffArr[j]) - 180);
                         fleeBound1 = DangerAngleDiffArr[h];
                         fleeBound2 = DangerAngleDiffArr[j];
                     }
-                }
-            }
-            fleeDeg = (fleeBound1 + fleeBound2) / 2;
-            //TODO Figure out why this is here
-            if (fleeBound1 + fleeBound2 < 180 && fleeBound1 + fleeBound2 > 0)
-                fleeDeg -= 180;
 
+            std::cout << fleeDeg << ": " << fleeBound1 << " to "<< fleeBound2 << "\n";
+
+            fleeDeg = (fleeBound1 + fleeBound2) / 2;
             setCurrDestPoint(sin(fleeDeg / 180 * PI) * range + x, cos(fleeDeg / 180 * PI) * range + y);
         }
         else
-            setCurrDestPoint(sin(DangerAngleDiffArr[0] / 180 * PI) * range + x, cos(DangerAngleDiffArr[0] / 180 * PI) * range + y);
+        {
+            setCurrDestPoint(x + (sin(DangerAngleDiffArr[0] / 180 * PI) * range), y + (cos(DangerAngleDiffArr[0] / 180 * PI) * range));
+        }
         currDangerPoints.clear();
 }
 
@@ -127,6 +126,7 @@ void AICity::wander()
 void AICity::addDangerPoint(std::string spriteName, sf::Sprite pSprite)
 {
     currDangerPoints.insert(std::make_pair(spriteName, std::make_pair(pSprite.getPosition().x, pSprite.getPosition().y)));
+
 }
 
 void AICity::updateCurrState(City * otherCity)
