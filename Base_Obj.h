@@ -15,6 +15,27 @@
 #define LEFT 1
 #define RIGHT -1
 
+class DangerPoint
+{
+    public:
+        //Array of pointers
+        std::pair<DangerPoint *, double> closestPoints[2];
+        unsigned int connectionCount;
+        std::pair<double, double> position;
+
+        DangerPoint(double x, double y)
+        {
+            closestPoints[0] = std::make_pair(nullptr, -1);
+            closestPoints[1] = std::make_pair(nullptr, -1);
+            connectionCount = 0;
+            position = std::make_pair(x, y);
+
+        }
+
+        void addClosestPoint(DangerPoint*, double);
+        void replaceClosestPoint(int, DangerPoint *, double);
+};
+
 class StaticObject
 {
     public:

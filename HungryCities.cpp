@@ -125,9 +125,7 @@ void HungryCitiesGame::fovCollisionCheck()
             {
                 if (ai->fovSprite.getGlobalBounds().intersects((*(*edgeSpritesIter)).getGlobalBounds()))
                 {
-                    std::ostringstream myString;
-                    myString << "EdgeSprite_" << (*(*edgeSpritesIter)).getPosition().x << "_" << (*(*edgeSpritesIter)).getPosition().y;
-                    ai->addDangerPoint(myString.str(), *(*edgeSpritesIter));
+                    ai->addDangerPoint(*(*edgeSpritesIter));
                 }
             }
 
