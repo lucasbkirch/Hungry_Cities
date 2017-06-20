@@ -34,7 +34,7 @@ class Mobile_Object
             x = x_;
             y = y_;
             angle = 0;
-            turn_rate = 0.1;
+            turn_rate = 0.3;
             baseMoveSpd = 0.00025;
             moveSpd = baseMoveSpd;
         }
@@ -44,7 +44,7 @@ class Mobile_Object
             x = rand() % mapSizeSpawnArea + 250;
             y = rand() % mapSizeSpawnArea + 250;
             angle = 0;
-            turn_rate = 0.1;
+            turn_rate = 0.3;
             baseMoveSpd = 0.25;
             moveSpd = baseMoveSpd;
         }
