@@ -121,23 +121,21 @@ void HungryCitiesGame::fovCollisionCheck()
         AICity * ai = dynamic_cast<AICity *>((seeingCityIter->second));
         if (ai != NULL)
         {
+            for (edgeSpritesIter = mapEdgeSprites.begin(); edgeSpritesIter != mapEdgeSprites.end(); edgeSpritesIter++)
+            {
+                if (ai->fovSprite.getGlobalBounds().intersects((*(*edgeSpritesIter)).getGlobalBounds()))
+                {
+                    std::ostringstream myString;
+                    myString << "EdgeSprite_" << (*(*edgeSpritesIter)).getPosition().x << "_" << (*(*edgeSpritesIter)).getPosition().y;
+                    ai->addDangerPoint(myString.str(), *(*edgeSpritesIter));
+                }
+            }
+
             for(seenCityIter = cityDict.begin(); seenCityIter != cityDict.end(); seenCityIter++)
                 if (seeingCityIter->second->name.compare(seenCityIter->second->name) != 0 && ai->fovSprite.getGlobalBounds().intersects((seenCityIter->second)->sprite.getGlobalBounds()))
                 {
                     ai->updateCurrState(seenCityIter->second);
                 }
-
-            for (edgeSpritesIter = mapEdgeSprites.begin(); edgeSpritesIter != mapEdgeSprites.end(); edgeSpritesIter++)
-            {
-                if (ai->fovSprite.getGlobalBounds().intersects((*(*edgeSpritesIter)).getGlobalBounds()))
-                {
-                    std::cout << "Sprite Spotted\n";
-                    std::ostringstream myString;
-                    myString << "EdgeSprite_" << (*(*edgeSpritesIter)).getPosition().x << "," << (*(*edgeSpritesIter)).getPosition().y;
-                    std::cout << myString.str() << "\n";
-                    ai->addDangerPoint(myString.str(), *(*edgeSpritesIter));
-                }
-            }
         }
     }
 }

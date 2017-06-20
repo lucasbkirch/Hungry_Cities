@@ -45,7 +45,6 @@ class HungryCitiesGame
                         newBorderSprite->setPosition(i, j);
                         newBorderSprite->setTextureRect(sf::IntRect(0, 0, 1, 1));
                         mapEdgeSprites.push_back(newBorderSprite);
-                        std::cout << "Edge sprite placed at " << i << ", " << j << "\n";
                     }
                 }
             }
