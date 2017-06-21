@@ -123,10 +123,10 @@ void AICity::wander()
     rotation(LEFT);
 }
 
-void AICity::addDangerPoint(sf::Sprite pSprite)
+void AICity::addDangerPoint(std::string spriteName, sf::Sprite pSprite)
 {
-    currDangerPoints.push_back(new DangerPoint(pSprite.getPosition().x, pSprite.getPosition().y));
-    //currDangerPoints.insert(std::make_pair(spriteName, std::make_pair(pSprite.getPosition().x, pSprite.getPosition().y)));
+    currDangerPoints.insert(std::make_pair(spriteName, std::make_pair(pSprite.getPosition().x, pSprite.getPosition().y)));
+
 }
 
 void AICity::updateCurrState(City * otherCity)
@@ -141,7 +141,7 @@ void AICity::updateCurrState(City * otherCity)
             currDestPoint.second = -1;
         }
         currState = FLEE; // Flee
-        addDangerPoint(otherCity->sprite);
+        addDangerPoint(otherCity->name, otherCity->sprite);
     }
     else if (otherCity->size_ < size_ && currTargetName.empty()) // PURSUE IF NOT CURRENTLY PURSUING
     {
