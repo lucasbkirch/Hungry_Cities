@@ -70,6 +70,66 @@ void WorldMap::InitializeTiles()
         j = 0;
         i += tileSideLength;
     }
+    ///////
+    i = 0;
+    j = 0;
+    while (i < world.getGlobalBounds().width)
+    {
+        while (j < world.getGlobalBounds().height)
+        {
+            TerrainTile * currTile = tileMap.at(std::make_pair(i, j));
+
+            bool xGreater20 = currTile->x > tileSideLength;
+            bool xLesserMax = currTile->x < mapSize - tileSideLength;
+            bool yGreater20 = currTile->y > tileSideLength;
+            bool yLesserMax = currTile->y < mapSize - tileSideLength;
+
+            //UpperLeft
+            if (xGreater20 && yGreater20)
+            {
+                currTile->adjacentTiles[0] = tileMap.at(std::make_pair(i - tileSideLength, j - tileSideLength));
+            }
+            //Top
+            if (yGreater20)
+            {
+                currTile->adjacentTiles[1] = tileMap.at(std::make_pair(i, j - tileSideLength));
+            }
+            //UpperRight
+            if (xLesserMax && yGreater20)
+            {
+                currTile->adjacentTiles[2] = tileMap.at(std::make_pair(i + tileSideLength, j - tileSideLength));
+            }
+            //Right
+            if (xLesserMax)
+            {
+                currTile->adjacentTiles[3] = tileMap.at(std::make_pair(i + tileSideLength, j));
+            }
+            //BottomRight
+            if (xLesserMax && yLesserMax)
+            {
+                currTile->adjacentTiles[4] = tileMap.at(std::make_pair(i + tileSideLength, j + tileSideLength));
+            }
+            //Bottom
+            if (yLesserMax)
+            {
+                currTile->adjacentTiles[5] = tileMap.at(std::make_pair(i, j + tileSideLength));
+            }
+            //BottomLeft
+            if (yLesserMax && xGreater20)
+            {
+                currTile->adjacentTiles[6] = tileMap.at(std::make_pair(i - tileSideLength, j + tileSideLength));
+            }
+            //Left
+            if (xGreater20)
+            {
+                currTile->adjacentTiles[7] = tileMap.at(std::make_pair(i - tileSideLength, j));
+            }
+
+            j += tileSideLength;
+        }
+        j = 0;
+        i += tileSideLength;
+    }
 }
 
 void WorldMap::CityGrassAffect(std::list<TerrainTile *> * grassCollisions)
