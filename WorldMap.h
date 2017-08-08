@@ -32,9 +32,10 @@ class TerrainTile
             x = xPos;
             y = yPos;
             setTerrainType(typeName);
-            tile.setTextureRect(sf::IntRect(x, y, tileSideLength, tileSideLength));
+            tile.setTextureRect(sf::IntRect(0, 0, tileSideLength, tileSideLength));
+            tile.setPosition(x, y);
             //If transformation/rotation every takes place, this will be useful
-            tile.setOrigin(tileSideLength/2, tileSideLength/2);
+            //tile.setOrigin(tileSideLength/2, tileSideLength/2);
         }
 
         //Methods
