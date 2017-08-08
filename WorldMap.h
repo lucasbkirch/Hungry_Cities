@@ -23,6 +23,8 @@ class TerrainTile
         std::string type;
         sf::Sprite tile;
         sf::Texture texture;
+        //Pointers to adjacent TerrainTiles
+        TerrainTile * adjacentTiles[8];
 
         //Constructors
         TerrainTile(int xPos, int yPos, std::string typeName)
@@ -30,8 +32,9 @@ class TerrainTile
             x = xPos;
             y = yPos;
             setTerrainType(typeName);
-            tile.setTextureRect(sf::IntRect(0, 0, tileSideLength, tileSideLength));
-            tile.setPosition(x, y);
+            tile.setTextureRect(sf::IntRect(x, y, tileSideLength, tileSideLength));
+            //If transformation/rotation every takes place, this will be useful
+            tile.setOrigin(tileSideLength/2, tileSideLength/2);
         }
 
         //Methods
